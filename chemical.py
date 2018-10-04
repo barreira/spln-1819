@@ -5,18 +5,12 @@ chemical_symbols = ['Ac', 'Ag', 'Al', 'Am', 'Ar', 'As', 'At', 'Au', 'Ba', 'Bo', 
 
 pattern = r'\t(' + '|'.join(chemical_symbols) + ')+$'
 
-# pattern = r'^(Ba|Co|N|Ta)+$'
-
 f = open('palavras.txt', 'r')
 
-#lineno = 0
-
 for line in f:
-    #lineno += 1
     if re.search(pattern, line, re.IGNORECASE):
-        new_line = line.split('\t')
-        composition = regex.match(r'(' + '|'.join(chemical_symbols) + ')+', new_line[-1], flags=regex.IGNORECASE).captures(1)
-        #print(lineno, new_line[-1], sep=': ', end='')
-        print(new_line[-1], composition, sep=': ', end='')
+        new_line = line.rstrip().split('\t')
+        composition = regex.match(r'^(' + '|'.join(chemical_symbols) + ')+$', new_line[-1], flags=regex.IGNORECASE).captures(1)
+        print(new_line[-1] + ": " + " + ".join(composition))
 
 f.close()
