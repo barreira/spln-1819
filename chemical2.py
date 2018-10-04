@@ -4,7 +4,7 @@ pattern = r'^(Ac|Ag|Al|Am|Ar|As|At|Au|Ba|Bo|Be|Bh|Bi|Bk|Br|Ca|Cd|C|Ce|Cf|Cl|Cn|C
 
 # pattern = r'^(Ba|Co|N|Ta)+$'
 
-f = open('output.txt', 'r')
+f = open('teste.txt', 'r')
 
 lineno = 0
 
