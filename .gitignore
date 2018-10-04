@@ -1,3 +1,5 @@
 .vscode/
 *.txt
 !palavras.txt
+!cleanwords.txt
+!teste.txt
