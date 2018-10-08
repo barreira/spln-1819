@@ -1,5 +1,6 @@
 .vscode/
 *.txt
 !palavras.txt
+!os_maias_init.txt
 !cleanwords.txt
 !teste.txt
