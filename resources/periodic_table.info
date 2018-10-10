@@ -1126,7 +1126,7 @@
 }
 {
     name: Tin
-    appearance: silvery-white (beta, \beta) or gray (alpha, \alpha)
+    appearance: silvery-white (beta) or gray (alpha)
     atomic_mass: 118.7107
     boil: 2875
     category: PostTransitionMetal
