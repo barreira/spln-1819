@@ -19,22 +19,22 @@ def processArgs():
 
     # Processa-se opções/argumentos do comando utilizado
     try: 
-        opts, args = getopt.getopt(sys.argv[1:],'i:o:hvtn',['ifile=','ofile=','help','version','total','noformulas'])
+        opts, args = getopt.getopt(sys.argv[1:],'i:o:hvan',['ifile=','ofile=','help','version','all','noformulas'])
     except getopt.GetoptError:
         print('Chemical Latex Generator\n' +
-              'Usage:\n\tchemicalLatex [-t] [-n] [-i <inputfile>] [-o <outputfile>]\n' +
-              'Options:\n\t-t | --total\t\tProcess all words that match, ignoring letter case and accents\n\t-n | --noformulas\tDoesn\'t match formulas, nor does it show its information\n\t-i | --ifile\t\tUsed to indicate input file\n\t-o | --ofile\t\tUsed to indicate output file')
+              'Usage:\n\tchemicalLatex [-a] [-n] [-i <inputfile>] [-o <outputfile>]\n' +
+              'Options:\n\t-a | --all\t\tProcess all words that match, ignoring letter case and accents\n\t-n | --noformulas\tDoesn\'t match formulas, nor does it show its information\n\t-i | --ifile\t\tUsed to indicate input file\n\t-o | --ofile\t\tUsed to indicate output file')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ('-h', '--help'):
             print('Chemical Latex Generator\n' +
-                  'Usage:\n\tchemicalLatex [-t] [-n] [-i <inputfile>] [-o <outputfile>]\n' +
-                  'Options:\n\t-t | --total\t\tProcess all words that match, ignoring letter case and accents\n\t-n | --noformulas\tDoesn\'t match formulas, nor does it show its information\n\t-i | --ifile\t\tUsed to indicate input file\n\t-o | --ofile\t\tUsed to indicate output file')
+                  'Usage:\n\tchemicalLatex [-a] [-n] [-i <inputfile>] [-o <outputfile>]\n' +
+                  'Options:\n\t-a | --all\t\tProcess all words that match, ignoring letter case and accents\n\t-n | --noformulas\tDoesn\'t match formulas, nor does it show its information\n\t-i | --ifile\t\tUsed to indicate input file\n\t-o | --ofile\t\tUsed to indicate output file')
             sys.exit()
         elif opt in ('-v', '--version'):
             print('Version 1.0')
             sys.exit()
-        elif opt in ('-t', '--total'):
+        elif opt in ('-a', '--all'):
             partial = False
         elif opt in ('-n', '--noformulas'):
             formulas = False
