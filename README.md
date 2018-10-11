@@ -6,4 +6,4 @@ Trabalhos práticos da U.C. de __Scripting no Processamento de Linguagem Natural
 Mestrado Integrado em Engenharia Informática - 4.º ano - Universidade do Minho
 
 * João Pires Barreira (@barreira)
-* Mafalda Nunes (@...)
+* Mafalda Nunes (@A77364)
