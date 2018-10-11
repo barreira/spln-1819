@@ -7,7 +7,7 @@ def roundup(x):
 
 
 # Imprimir início de documento latex
-def printInitDocument(fout):
+def printInitDocument(fout, resourcespath):
     fout.write('\\documentclass{article}\n' +
                 '\\usepackage[utf8]{inputenc}\n' +
                 '\\usepackage{indentfirst}\n'
@@ -29,7 +29,7 @@ def printInitDocument(fout):
                 '%% Center Boxes According to Text\n\\newbox\\mybox\n\\def\\centerfigure#1{%\n  \\setbox\\mybox\\hbox{#1}%\n  \\raisebox{-0.43\\dimexpr\\ht\\mybox+\\dp\\mybox}{\\copy\\mybox}%\n}\n\n' +
                 '\\begin{document}\n\n' +
                 '\\lineskip = 0.25cm\n\n' +
-                '%% Cover Page\n\\begingroup\n\\thispagestyle{empty}\n\\AddToShipoutPicture*{\\put(0,0){\\includegraphics[scale=1.76]{resources/Front}}}\n\\centering {\n    \\vspace*{-0.01cm}\n    \\Huge\\sffamily\\selectfont\\textcolor{white}{\\textbf{Chemical Elements}}\\par\n    \\vspace*{0.5cm}\n    \n    \\LARGE\\textcolor{white}{Obtaining chemical elements that constitute everyday words}\\par\n    \\vspace*{8.6cm}\n}\n\n\\hfill\n\\begin{minipage}{0.3\\textwidth}\n    \\centering\\LARGE\\sffamily\\selectfont {\n        \\textcolor{white}{João Barreira}\n        \n        \\vspace{0.3cm}\n        \n        \\textcolor{white}{Mafalda Nunes}\n    }\\par\n\\end{minipage}\n\n\\vspace{5.2cm}\n\n\n{\\Large\\par\\sffamily\\selectfont\\hfill \\textcolor{white}{Scripting e Processamento de Linguagem Natural}}\n\n\\endgroup\n\\newpage\n\n' +
+                '%% Cover Page\n\\begingroup\n\\thispagestyle{empty}\n\\AddToShipoutPicture*{\\put(0,0){\\includegraphics[scale=1.76]{' + resourcespath+ '/Front}}}\n\\centering {\n    \\vspace*{-0.01cm}\n    \\Huge\\sffamily\\selectfont\\textcolor{white}{\\textbf{Chemical Elements}}\\par\n    \\vspace*{0.5cm}\n    \n    \\LARGE\\textcolor{white}{Obtaining chemical elements that constitute everyday words}\\par\n    \\vspace*{8.6cm}\n}\n\n\\hfill\n\\begin{minipage}{0.3\\textwidth}\n    \\centering\\LARGE\\sffamily\\selectfont {\n        \\textcolor{white}{João Barreira}\n        \n        \\vspace{0.3cm}\n        \n        \\textcolor{white}{Mafalda Nunes}\n    }\\par\n\\end{minipage}\n\n\\vspace{5.2cm}\n\n\n{\\Large\\par\\sffamily\\selectfont\\hfill \\textcolor{white}{Scripting e Processamento de Linguagem Natural}}\n\n\\endgroup\n\\newpage\n\n' +
                 '%% Obtained Text\n\\section{Obtained Text}\n\n'
             )
 
@@ -154,7 +154,7 @@ def printFormulasOccurrencesApp(fout, formulas_found):
     
 
 # Imprimir informação dos elementos químicos nos apêndices
-def printElemsInfoApp(fout, ptable):
+def printElemsInfoApp(fout, resourcespath, ptable):
     fout.write('%% Chemical Elements Information\n' +
                 '\\subsection{Chemical Elements Information}\n' +
                 '\\label{anexo:elements_info}\n\n')
@@ -188,12 +188,12 @@ def printElemsInfoApp(fout, ptable):
         if 'named_by' in v and v['named_by'] and v['named_by'] != 'null':
             fout.write('\\textit{Named By}: ' + v['named_by'] + '\n\n')
         if 'spectral_img' in v and v['spectral_img'] and v['spectral_img'] != 'null':
-            fout.write('\\immediate\\write18{wget -nc -nd -q -r -P ./resources/spectral_img -A jpeg,jpg,bmp,gif,png ' + v['spectral_img'] + '}\n' +
-                '\\begin{figure}[!ht]\n    \\centering\n    \\includegraphics[width=12cm]{resources/spectral_img/' + v['spectral_img'].split('/')[-1] + '}\n    \\caption{' + v['name'] + ' Spectral Image}\n\\end{figure}\n\n')
+            fout.write('\\immediate\\write18{sudo wget -nc -nd -q -r -P ' + resourcespath + '/spectral_img -A jpeg,jpg,bmp,gif,png ' + v['spectral_img'] + '}\n' +
+                '\\begin{figure}[!ht]\n    \\centering\n    \\includegraphics[width=12cm]{' + resourcespath + '/spectral_img/' + v['spectral_img'].split('/')[-1] + '}\n    \\caption{' + v['name'] + ' Spectral Image}\n\\end{figure}\n\n')
 
 
 # Imprimir fim do documento latex (com apêndices)
-def printEndDocument(fout, ptable, formulas_found):
+def printEndDocument(fout, resourcespath, ptable, formulas_found):
     # Apendices
     fout.write('\n\\setcounter{section}{0}\n' +
                 '\\setcounter{subsection}{0}\n\n' +
@@ -209,6 +209,6 @@ def printEndDocument(fout, ptable, formulas_found):
     printPeriodicTableApp(fout, ptable)
     printElemsOccurrencesApp(fout, ptable)
     printFormulasOccurrencesApp(fout, formulas_found)
-    printElemsInfoApp(fout, ptable)
+    printElemsInfoApp(fout, resourcespath, ptable)
     
     fout.write('\\end{document}\n')

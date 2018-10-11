@@ -3,6 +3,7 @@
 import re
 import regex
 import sys
+import os.path
 import getopt
 import pubchempy as pcp
 from itertools import groupby
@@ -44,9 +45,30 @@ def processArgs():
 
     # Definir input e output
     fin = sys.stdin if not inputfile else open(inputfile, 'r')
-    fout = sys.stdout if not outputfile else open(outputfile, 'w')
 
-    return fin, fout, partial, formulas
+    if not outputfile:
+        fout = sys.stdout
+        outputdir = '.' 
+    else:
+        fout = open(outputfile, 'w')
+        if '/' in outputfile:
+            outputdir = outputfile.rpartition('/')[0]
+        else:
+            outputdir = '.'
+
+    # Definir path para a pasta dos resources
+    if os.path.isfile(outputdir + "/resources/periodic_table.info") \
+                and os.path.isfile(outputdir + "/resources/Front.jpg"):
+        resourcespath = outputdir + "/resources"
+    elif os.path.isfile("/usr/local/bin/resources/periodic_table.info") \
+                and os.path.isfile("/usr/local/bin/resources/Front.jpg"):
+        resourcespath = "/usr/local/bin/resources"
+    else:
+        print('Chemical Latex Generator\n' +
+                  'Error: No file \'Resources\' found')
+        sys.exit(3)
+
+    return fin, fout, resourcespath, partial, formulas
 
 
 # Remover acentos de uma palavra
@@ -187,10 +209,10 @@ def processWord(word, partial, formulas, patternElements, patternFormulas, ptabl
 # Main
 def main():
     # Processamento de argumentos do comando utilizado
-    fin, fout, partial, formulas = processArgs()
+    fin, fout, resourcespath, partial, formulas = processArgs()
 
     # Leitura da informação da tabela periódica e inicialização de variáveis (padrões, conteúdo do input, ...)
-    periodic_table = getPeriodicTableInfo('resources/periodic_table.info')
+    periodic_table = getPeriodicTableInfo(resourcespath + '/periodic_table.info')
     chemical_symbols = list(map(lambda e: e['symbol'], periodic_table.values()))
     patternElements = r'^(' + '|'.join(chemical_symbols) + ')+$'
     patternFormulas = r'^(' + '|'.join(chemical_symbols + [r'\d']) + ')+$'
@@ -201,7 +223,7 @@ def main():
     current_part = 0
 
     # Escreve-se início do documento
-    printInitDocument(fout)
+    printInitDocument(fout, resourcespath)
 
     # Processa-se o texto de input e escreve-se o output
     for word in content:
@@ -216,7 +238,7 @@ def main():
         current_part += 1
 
     # Escreve-se fim do documento
-    printEndDocument(fout, periodic_table, formulas_found)
+    printEndDocument(fout, resourcespath, periodic_table, formulas_found)
 
     # Fechar ficheiros abertos
     fin.close()
