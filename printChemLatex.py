@@ -112,7 +112,7 @@ def printElemsOccurrencesApp(fout, ptable):
 
         for elem in elems:
             if i % 34 == 0:
-                fout.write('  \\end{bchart}\n\n')
+                fout.write('  \\end{bchart}\n}\n\n\\scalebox{0.90}{\n')
             if i == 2 or i % 34 == 0:
                 fout.write('  \\begin{bchart}[max=' + str(m) + ']\n')
             fout.write('    \\bcbar[label=' + elem['symbol'] + ', color=' + colors[elem['category']] + ']{' + str(elem['occurrences']) + '}\n' +
@@ -138,11 +138,12 @@ def printFormulasOccurrencesApp(fout, formulas_found):
 
         fout.write('%% Chemical Formulas Occurrences\n' +
                     '\\subsection{Chemical Formulas Occurrences}\n' +
-                    '\\label{anexo:formulas_occurrences}\n\n')
+                    '\\label{anexo:formulas_occurrences}\n\n' +
+                    '\\scalebox{0.90}{\n')
 
         for f in formulas:
             if i % 34 == 0:
-                fout.write('\\end{bchart}\n\n')
+                fout.write('\\end{bchart}\n}\n\n\\scalebox{0.90}{\n')
             if i == 2 or i % 34 == 0:
                 fout.write('\\begin{bchart}[max=' + str(m) + ']\n')
             fout.write('    \\bcbar[label=' + f[0] + ']{' + str(f[1]) + '}\n' +
@@ -150,7 +151,7 @@ def printFormulasOccurrencesApp(fout, formulas_found):
             i += 1
         
         if i > 2: 
-            fout.write('\\end{bchart}\n\n\\newpage\n\n')
+            fout.write('\\end{bchart}\n}\n\n\\newpage\n\n')
     
 
 # Imprimir informação dos elementos químicos nos apêndices

@@ -167,11 +167,11 @@ def searchFormulaInfo(formula):
 def processWord(word, partial, formulas, patternElements, patternFormulas, ptable,
                                             formulas_found, formulas_not_found, fout):
     
-    word = clean_accents(word).lower() if not partial else word
+    word_clean = clean_accents(word).lower() if not partial else word
 
     # Escrever sobre elementos químicos encontrados
-    if re.search(patternElements, word, re.IGNORECASE if not partial else 0):
-        composition = regex.match(patternElements, word, flags=regex.IGNORECASE if not partial else 0).captures(1)
+    if re.search(patternElements, word_clean, re.IGNORECASE if not partial else 0):
+        composition = regex.match(patternElements, word_clean, flags=regex.IGNORECASE if not partial else 0).captures(1)
         for symbol in composition:
             ptable[symbol.lower()]['occurrences'] += 1
         printChemElements(fout, composition, ptable)
@@ -179,8 +179,8 @@ def processWord(word, partial, formulas, patternElements, patternFormulas, ptabl
         fout.write(word.replace('_','\_').replace('\n','\n\n'))
 
     # Escrever sobre fórmulas químicas encontradas
-    if formulas and re.search(patternFormulas, word, re.IGNORECASE if not partial else 0):
-        composition = regex.match(patternFormulas, word, flags=regex.IGNORECASE if not partial else 0).captures(1)
+    if formulas and re.search(patternFormulas, word_clean, re.IGNORECASE if not partial else 0):
+        composition = regex.match(patternFormulas, word_clean, flags=regex.IGNORECASE if not partial else 0).captures(1)
         composition = list(map(lambda e: ptable[e.lower()]['symbol'] if e.lower() in ptable else e , composition))
         formula = ''.join([key + str(len(list(group))) for key, group in groupby(composition)]).replace('1','')
         if formula:
