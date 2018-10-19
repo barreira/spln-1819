@@ -1,5 +1,15 @@
 #!/usr/bin/python3
 
+"""Find which words can be written as a sequence of chemical symbols and generates a latex file with that text and information about those chemical symbols.
+
+It receives as input a text and generates as output a latex file, with the same text, but the words that
+match are written as a sequence of chemical symbols and, optionally, the formulas are annotated with
+information about them. At the end of the latex file there are 4 possible attachments: a periodic table,
+a chart with the number of occurrences of each chemical element, another with the number of occurrences
+of each found formula and information about each one of the chemical elements (which can be reached from
+the chemical elements of the text or the periodic table).
+"""
+
 import re
 import regex
 import sys
@@ -228,7 +238,7 @@ def main():
     # Processa-se o texto de input e escreve-se o output
     for word in content:
         # Imprime-se nº de partes processadas no total
-        print('Processed ' + str(current_part) + '/' + str(total_parts), end='\r')
+        print('Processed ' + str(current_part) + '/' + str(total_parts), file=sys.stderr, end='\r')
 
         # Processa-se palavra
         processWord(word, partial, formulas, patternElements, patternFormulas, 

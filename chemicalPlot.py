@@ -1,5 +1,11 @@
 #!/usr/bin/python3
 
+"""Find which words can be written as a sequence of chemical symbols and generates a chart with the number of occurrences of each chemical element.
+
+It receives as input a list of words (one word per line) and generates as output an image consisting of
+a chart with the number of occurrences of each chemical element.
+"""
+
 import re
 import regex
 import sys
