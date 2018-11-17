@@ -12,32 +12,35 @@
 
 <body>
 
+  <!-- Side Navigation -->
+  <nav class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="width: 20%; font-size: 16px; padding-top: 5%; display: none;"
+    id="sidebar">
+    <h1 class="w3-text-theme w3-center" style="margin-bottom: 15px">MENU</h1>
+    <a href="#" class="w3-bar-item w3-button"> &#09; &#09; &#09;<i class="fa fa-align-justify"></i> Tagged Text</a>
+    <a href="pos_info_form" class="w3-bar-item w3-button"> &#09; &#09; &#09;<i class="fa fa-info-circle"></i> POS
+      Information </a>
+    <a href="graphs_form" class="w3-bar-item w3-button"> &#09; &#09; &#09;<i class="fa fa-arrow-circle-right"></i>
+      Dependencies Graphs</a>
+  </nav>
+
+
   <!-- Header -->
   <header class="w3-container w3-theme w3-padding" id="myHeader">
+    <i id='sidebarButton' class="fa fa-bars w3-xlarge w3-button w3-theme"></i>
     <div class="w3-center" , style="margin-bottom: 30px">
       <h4>Scripting no Processamento de Linguagem Natural</h4>
       <h1 class="w3-xxxlarge w3-animate-bottom">Spacy's POS Tagging</h1>
     </div>
   </header>
 
-  <!-- Input -->
-  <div class="w3-row-padding" style="margin: 30px 30px 30px 30px;">
-    <div>
-      <form class="w3-container w3-card-4" method="POST">
-        <h2 class="w3-center">Input Form</h2>
-        <div class="w3-section" style="width: 35%;">
-          <label>Select File</label>
-          <input class="w3-input" style="background-color: white; border-color: white" type="file" id="filename"
-            onchange="handleFiles(this.files)">
-        </div>
-        <div class="w3-section">
-          <label>Input Text</label>
-          <textarea class="w3-input" id="input" name="input" style="border: 2px solid #ccc" rows="15"></textarea>
-        </div>
-        <div class="w3-section w3-center">
-          <button class="w3-btn" id="submitButton" style="border: 2px solid #ccc" type="submit">Generate</button>
-        </div>
-      </form>
+  <!-- Tagged Text -->
+  <div>
+    <h2 class="w3-center" style="margin-bottom: 20px">Tagged Text</h2>
+    <div style="margin: 30px">
+      {{ tagged_text|safe }}
+    </div>
+    <div class="w3-section w3-center">
+      <button class="w3-btn" id="submitButton" style="border: 2px solid #ccc" type="submit">Return</button>
     </div>
   </div>
   <hr>
@@ -46,13 +49,13 @@
   <!-- Footer -->
   <footer class="w3-container w3-theme-dark w3-padding-16">
     <h3>Grupo 7</h3>
-    <p>&emsp;A73831 - João Miguel Pires Barreira</p>
+    <p>&#09;A73831 - João Miguel Pires Barreira</p>
     <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
       <span class="w3-text w3-theme-light w3-padding">Go To Top</span>
       <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
           <i class="fa fa-chevron-circle-up"></i></span></a>
     </div>
-    <p>&emsp;A77364 - Mafalda Guimarães Nunes</p>
+    <p>&#09;A77364 - Mafalda Guimarães Nunes</p>
   </footer>
 
   <!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
@@ -63,10 +66,24 @@
       var fileReader = new FileReader();
       fileReader.onload = function (fileLoadedEvent) {
         var textFromFileLoaded = fileLoadedEvent.target.result;
-        document.getElementById("input").innerHTML = textFromFileLoaded;
+        document.getElementById("input").innerText = textFromFileLoaded;
       };
       fileReader.readAsText(fileToLoad, "UTF-8");
     }
+
+    // Side navigation
+    window.onload = function () {
+      var sidebar = document.getElementById('sidebar');
+      document.onclick = function (e) {
+        if (e.target.id !== 'sidebar' && e.target.id !== 'sidebarButton') {
+          sidebar.style.display = 'none';
+        }
+        else {
+          sidebar.style.display = 'block';
+        }
+      };
+    };
+
   </script>
 
 </body>
