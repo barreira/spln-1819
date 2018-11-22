@@ -25,10 +25,18 @@
     <div>
       <form class="w3-container w3-card-4" method="POST">
         <h2 class="w3-center">Input Form</h2>
-        <div class="w3-section" style="width: 35%;">
-          <label>Select File</label>
-          <input class="w3-input" style="background-color: white; border-color: white" type="file" id="filename"
-            onchange="handleFiles(this.files)">
+        <div style="display: flex; justify-content: space-between;">
+          <div class="w3-section">
+            <label>Select File</label>
+            <input class="w3-input" style="background-color: white; border-color: white" type="file" id="filename"
+                   onchange="handleFiles(this.files)">
+          </div>
+          <div align="right">
+            <select id="lang" name="lang">
+              <option value="pt">Português</option>
+              <option value="en_core_web_lg">English</option>
+            </select>
+          </div>
         </div>
         <div class="w3-section">
           <label>Input Text</label>
