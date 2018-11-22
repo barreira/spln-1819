@@ -8,5 +8,7 @@ venv/
 !cleanwords.txt
 !teste.txt
 !outputs/*
+!en.txt
+!pt.txt
 .DS_Store
 
