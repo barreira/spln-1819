@@ -39,11 +39,13 @@
   <!-- POS Information -->
   <div>
     <h2 class="w3-center" style="margin-bottom: 20px">POS Information</h2>
-    <div style="margin: 30px">
+    <div style="margin: 30px; overflow: auto; left: 0; right: 0">
       {{ table|safe }}
     </div>
     <div class="w3-section w3-center">
-      <button class="w3-btn" id="submitButton" style="border: 2px solid #ccc" type="submit">Return</button>
+      <form method="POST">
+        <button class="w3-btn" id="submitButton" style="border: 2px solid #ccc" type="submit">Return</button>
+      </form>
     </div>
   </div>
   <hr>

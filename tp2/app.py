@@ -5,6 +5,7 @@ from pos_tagging import generate_tagged_text, generate_pos_information, generate
 app = Flask(__name__)
 
 nlp = spacy.load('pt')
+# spacy.load('en_core_web_lg')
 tagged_text = ''
 pos_info = ''
 graphs = ''
