@@ -7,13 +7,15 @@ app = Flask(__name__)
 tagged_text = ''
 pos_info = ''
 graphs = ''
-
+lang = ''
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     global nlp, tagged_text, pos_info, graphs 
     if request.method == 'POST':
-        nlp = spacy.load(request.values.get('lang'))
+        nlang = request.values.get('lang')
+        if lang != nlang:
+            nlp = spacy.load(nlang)
         doc = nlp(request.values.get('input'))
         tagged_text = generate_tagged_text(doc, type = 'html')
         pos_info = generate_pos_information(doc)
