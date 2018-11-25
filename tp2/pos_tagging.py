@@ -18,14 +18,20 @@ def generate_html_table(headers, data):
     return res
 
 # Part-of-speech tagging
-def generate_pos_information(doc):
+def generate_pos_information(doc, vocab):
     # python3 -m spacy download pt
-    headers = ["Text","Lemma", "POS", "TAG", "DEP", "SHAPE", "IS_ALPHA", "IS_STOP"]
+    headers = ["Text","Lemma", "POS", "TAG", "DEP", "SHAPE", "MORPHOLOGIAL INFO", "IS_ALPHA", "IS_STOP"]
     data = []
+    tokens = []
 
     for token in doc:
-        data.append([str(s) for s in (token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
-                token.shape_, token.is_alpha, token.is_stop)])
+        if (str(token.pos_) != 'SPACE' and str(token.pos_) != 'PUNCT') or token.text not in tokens:
+            morph_info = dict(filter(lambda x : x[0]!=74, vocab.morphology.tag_map[token.tag_].items()))
+            if not morph_info:
+                morph_info = ''
+            data.append([str(s) for s in (token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
+                    token.shape_, morph_info, token.is_alpha, token.is_stop)])
+            tokens.append(token.text)
     
     return generate_html_table(headers, data)
 
@@ -66,3 +72,9 @@ def generate_tagged_text(doc, type = 'server', entities = None, colors = None):
     return res
 
 # Rule-based morphology
+def add_tokenizer_exceptions(nlp, tokens, tokenizer=None):
+    if not tokenizer:
+        tokenizer = nlp.tokenizer
+    # tokens = [{'word': [{ORTH: 'word[0..p]',...}, {ORTH: 'word[p..n]', LEMMA: 'valor',...}]},{...}]
+    for token, token_attrs in tokens.items():
+        tokenizer.add_special_case(token, token_attrs)

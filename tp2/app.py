@@ -1,27 +1,30 @@
 from flask import Flask, request, url_for, redirect, render_template
 import spacy
-from pos_tagging import generate_tagged_text, generate_pos_information, generate_dependencies_graph
+from pos_tagging import *
+import json
 
 app = Flask(__name__)
 
 tagged_text = ''
 pos_info = ''
 graphs = ''
-lang = ''
+nlp = {'en': spacy.load('en_core_web_lg'), 'pt': spacy.load('pt') }
+lang = 'pt'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global nlp, tagged_text, pos_info, graphs 
+    global lang, nlp, tagged_text, pos_info, graphs
     if request.method == 'POST':
-        nlang = request.values.get('lang')
-        if lang != nlang:
-            nlp = spacy.load(nlang)
-        doc = nlp(request.values.get('input'))
-        tagged_text = generate_tagged_text(doc, type = 'html')
-        pos_info = generate_pos_information(doc)
+        lang = request.values.get('lang')
+        entities = request.form.getlist('entity')
+        token_exceptions = json.loads(request.values.get('tokenExceptions'))
+        add_tokenizer_exceptions(nlp[lang], token_exceptions)
+        doc = nlp[lang](request.values.get('input'))
+        tagged_text = generate_tagged_text(doc, type = 'html', entities = entities)
+        pos_info = generate_pos_information(doc, nlp[lang].vocab)
         graphs = '\n'.join(generate_dependencies_graph(doc, type = 'html'))
         return redirect(url_for('tagged_text_form'))
-    return render_template('index.html')
+    return render_template('index.html', lang=lang)
 
 
 @app.route('/tagged_text_form', methods=['GET', 'POST'])
@@ -49,4 +52,4 @@ def graphs_form():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
