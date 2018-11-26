@@ -13,13 +13,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
   <style>
-    .tooltip {
+    .mytooltip {
         position: relative;
         display: inline-block;
         border-bottom: 1px dotted black;
     }
     
-    .tooltip .tooltiptext {
+    .mytooltip .mytooltiptext {
         visibility: hidden;
         width: 120px;
         background-color: black;
@@ -28,14 +28,14 @@
         border-radius: 6px;
         padding: 5px 0;
         
-        /* Position the tooltip */
+        /* Position the mytooltip */
         position: absolute;
         z-index: 1;
         top: -5px;
-        left: 105%;
+        right: 105%;
     }
     
-    .tooltip:hover .tooltiptext {
+    .mytooltip:hover .mytooltiptext {
         visibility: visible;
     }
   </style>
@@ -109,7 +109,7 @@
         </div>
         <div class="modal-body" style="height: 500px; overflow-y: auto;">
           <form class="w3-container">
-            <table id="token_excp_table" style="border-collapse: separate; border-spacing: 5px">
+            <table id="token_excp_table" width="100%" style="border-collapse: separate; border-spacing: 5px">
               <tbody>
                 {%
                   set characteristics =  [('Token', 'Token whose characteristics will be changed.'),
@@ -157,10 +157,9 @@
                       <input class="w3-input" type="text" id="{{ c }}" name="{{ c }}" style="border: 2px solid #ccc; display: inline-block" value="">
                     </td>
                     <td>
-                      <div class="tooltip">
-                        <!--<i class="fas fa-question-circle"></i>-->
-                        ?
-                        <span class="tooltiptext">{{ desc }}</span>
+                      <div class="mytooltip">
+                        <i class="fas fa-question-circle"></i>
+                        <span class="mytooltiptext">{{ desc }}</span>
                       </div>
                     </td>
                   </div>
