@@ -1,0 +1,200 @@
+%\title{Title page with logo}
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[12pt]{article}
+\usepackage[portuges]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[toc,page]{appendix}
+\usepackage{indentfirst}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{longtable}
+\usepackage[margin=4cm]{geometry}
+
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\renewcommand\appendixtocname{Anexos}
+\renewcommand\appendixpagename{Anexos}
+
+\begin{document}
+\sloppy
+\LTcapwidth=\textwidth
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+
+\vspace{0.5cm}
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Scripting no Processamento}\\[0.3cm]
+\textsc{\LARGE de Linguagem Natural}\\[1.1cm] % Name of your university/college
+\textsc{\Large Universidade do Minho}\\[0.5cm] % Major heading such as course name
+\textsc{\large Mestrado Integrado em Engenharia Informática}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+\vspace{0.8cm}
+\HRule \\[0.6cm]
+{ \huge \bfseries TP2}\\[0.4cm] % Title of your document
+{ \Large \bfseries Spacy's POS Tagging}\\[0.4cm] % Subtitle of your document
+\HRule \\[1.0cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\Large \emph{Grupo 7:}\\
+A73831 - João Miguel Pires Barreira\\
+A77364 - Mafalda Nunes\\[1.3cm]
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[1.5cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics[width=0.55\textwidth]{logo}\\[1cm] % Include a department/university logo - this will require the graphicx package
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+\vspace{0.5cm}
+
+\begin{abstract}
+O presente relatório tem com objetivo a aprendizagem das funcionalidades da ferramenta \textit{Spacy}. Para tal, apresentar-se-á uma descrição da mesma, mais especificamente da funcionalidade de POS \textit{tagging}, bem como um pequeno exemplo que demonstre como utilizar a ferramenta.
+
+Este trabalho pretende dar resposta ao trabalho prático 2, proposto na unidade curricular SPLN, do Mestrado em Engenharia Informática, da Universidade do Minho.
+\end{abstract}
+
+\vspace{0.5cm}
+
+\tableofcontents
+
+\newpage
+
+\let\oldref\ref
+\renewcommand{\ref}[1]{\smash{\underline{\oldref{#1}}}}
+
+\section{Spacy's}
+
+% Falar sobre o que é
+% https://spacy.io/usage/spacy-101
+% https://spacy.io/usage/v2
+
+\subsection{Arquitetura}
+
+% https://spacy.io/api/
+
+\subsection{Funcionalidades}
+
+% Falar de forma relativamente geral, mas com imagens para se perceber (informação de POS tagging pode ser aprofundada e utilizada na próxima secção)
+
+% https://spacy.io/usage/spacy-101
+% https://spacy.io/usage/linguistic-features
+% https://spacy.io/usage/processing-pipelines
+% https://spacy.io/usage/vectors-similarity
+% https://spacy.io/usage/training
+% https://spacy.io/usage/adding-languages
+% https://spacy.io/usage/visualizers
+
+% https://spacy.io/usage/v2
+% https://spacy.io/api/annotation
+% https://spacy.io/api/top-level
+
+% https://towardsdatascience.com/a-short-introduction-to-nlp-in-python-with-spacy-d0aa819af3ad
+% https://towardsdatascience.com/a-review-of-named-entity-recognition-ner-using-automatic-summarization-of-resumes-5248a75de175
+
+
+\subsection{Vantagens}
+
+% https://spacy.io/usage/facts-figures
+% https://www.analyticsvidhya.com/blog/2017/04/natural-language-processing-made-easy-using-spacy-%E2%80%8Bin-python/
+% https://medium.com/@brianray_7981/ai-in-practice-identifying-parts-of-speech-in-python-8a690c7a1a08
+
+\subsection{Utilização}
+
+% https://spacy.io/api/cli
+% https://spacy.io/usage/
+
+
+
+\subsection{Aplicações}
+
+% https://spacy.io/usage/examples
+% https://github.com/explosion/spacy/blob/master/examples/information_extraction/entity_relations.py
+
+
+% Implementar?
+% https://books.google.pt/books?id=48RiDwAAQBAJ&pg=PA80&lpg=PA80&dq=spacy+attrs&source=bl&ots=R2y5H5s6e5&sig=33zo94rAGOHBR5PxOH51J1GrBGM&hl=pt-PT&sa=X&ved=2ahUKEwiNlpbKoO_eAhWmJcAKHetlCfQ4ChDoATAAegQICRAB#v=onepage&q=spacy%20attrs&f=false
+
+
+\section{Spacy's POS Tagging}
+
+% Aprofundar tema usando websites relevantes indicados nas funcionalidades
+
+
+\subsection{Utilização}
+
+
+\section{Exemplo Demonstrativo}
+
+% Falar das funções que desenvolvemos
+
+
+
+
+
+% Anexos
+
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+
+
+\newpage
+
+\appendixpage
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+% Questão 1
+
+%\subsection{Título}
+%\label{anexo:nome}
+%\begin{figure}[!ht]
+%	\centering
+%	\makebox[\textwidth][c]{\includegraphics[width=13cm]{Pictures/...}}
+%	\caption{Legenda}
+%\end{figure}
+
+\newpage
+
+\begin{thebibliography}{99}
+	
+	% Questão 1
+	
+	\bibitem{linkname}
+	Autor,
+	``Título'',
+	\textit{website name},
+	\url{website link}.
+	
+\end{thebibliography}
+
+\end{document}
