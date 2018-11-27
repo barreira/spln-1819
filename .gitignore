@@ -1,7 +1,17 @@
+*.aux
+*.out
+*.log
+*.fls
+*.toc
+*.fdb_latexmk
+*.synctex.*
+
 __pycache__/
 venv/
+
 .idea/
 .vscode/
+
 *.txt
 !palavras.txt
 !os_maias_init.txt
@@ -10,5 +20,6 @@ venv/
 !outputs/*
 !en.txt
 !pt.txt
+
 .DS_Store
 
