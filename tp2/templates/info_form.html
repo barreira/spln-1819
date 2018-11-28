@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Spacy's POS Tagging - Information</title>
+  <title>spaCy's POS Tagging - Information</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -11,6 +11,33 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStacked);
+
+    function drawStacked() {
+      var data = google.visualization.arrayToDataTable(eval("{{bar_chart|safe}}"));
+
+      var options = {
+        title: 'POS Tags Frequence',
+        width: 1200,
+        height: 600,
+        isStacked: true,
+        hAxis: {
+          title: 'POS Tags Frequence (%)',
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'POS Tag'
+        },
+        legend: { position: 'none' }
+      };
+      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+  </script>
+
 </head>
 
 <body>
@@ -32,13 +59,17 @@
     <i id='sidebarButton' class="fa fa-bars w3-xlarge w3-button w3-theme"></i>
     <div class="w3-center" , style="margin-bottom: 30px">
       <h4>Scripting no Processamento de Linguagem Natural</h4>
-      <h1 class="w3-xxxlarge w3-animate-bottom">Spacy's POS Tagging</h1>
+      <h1 class="w3-xxxlarge w3-animate-bottom">spaCy's POS Tagging</h1>
     </div>
   </header>
 
   <!-- Information -->
   <div>
     <h2 class="w3-center" style="margin-bottom: 20px">Information</h2>
+    <!-- Bar chart -->
+    <div id="chart_div" style="margin-top: -20px; display: flex; justify-content: center;"></div>
+    <br>
+    <!-- Table -->
     <div style="margin: 30px; overflow: auto; left: 0; right: 0">
       {{ table|safe }}
     </div>

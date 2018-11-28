@@ -1,10 +1,14 @@
 import os
 import re
+import pandas as pd
 import spacy
 from spacy import displacy
 from spacy.util import update_exc
 from pathlib import Path
 from prettytable import PrettyTable
+import matplotlib as mpl
+mpl.use('Agg')
+from matplotlib import pyplot as plt
 
 # https://spacy.io/usage/linguistic-features
 
@@ -26,6 +30,19 @@ def generate_table(headers, data):
     return table
 
 # Part-of-speech tagging
+def generate_pos_chart(doc, filename='pos_frequence.svg', type='html'):
+    tag_dict = {w.pos : w.pos_ for w in doc}
+    pos_freq = []
+    pos_tags = []
+    for pos_id, freq in doc.count_by(spacy.attrs.POS).items():
+        pos_freq.append(freq / len(doc))
+        pos_tags.append(tag_dict[pos_id])
+    if type=='html':
+        return [['POS Tag', 'POS Frequence (%)']] + [list(x) for x in zip(pos_tags,pos_freq)]
+    else:
+        plt.barh(range(1,len(pos_tags)+1), pos_freq, tick_label=pos_tags)
+        plt.savefig(filename)
+
 def generate_information(doc, vocab, type='html'):
     # python3 -m spacy download pt
     headers = ["Text","Lemma", "POS", "TAG", "DEP", "SHAPE", "MORPHOLOGIAL INFO", "IS_ALPHA", "IS_STOP"]

@@ -8,22 +8,24 @@ from flask import Flask, request, url_for, redirect, render_template
 # Processar argumentos do comando
 def processArgs():
     info_out = ''
+    pos_chart_out = ''
     tagged_text_out = ''
     graphs_out = ''
     lang = 'pt'
     inputfile = ''
 
-    error = 'USAGE:\tpython3 app.py [(-i <outputfile> | -t <outputfile> | -g <outputfile>) [-l <language>] <inputfile>]\n\n' + \
+    error = 'USAGE:\tpython3 app.py [(-i <outputfile> | -p <outputfile> | -t <outputfile> | -g <outputfile>) [-l <language>] <inputfile>]\n\n' + \
             'OPTIONS:\n' + \
             '\t-l\tlanguage - \'pt\' (default) or \'en\'\n' + \
             '\t-i\treturns table with information about tokens to outputfile (or \'shell\')\n' + \
+            '\t-p\tgenerates bar chart with POS tag frequence to outputfile\n' + \
             '\t-t\treturns tagged text to outputfile (or \'shell\')\n' + \
-            '\t-g\treturns dependencies graphs to outputfile.svg\n' +\
+            '\t-g\tgenerates dependencies graphs to outputfile.svg\n' +\
             '* if no options are provided, a web server will be initialized, where the input will be inserted and the output presented.'
 
     # Processar opções/argumentos do comando utilizado
     try: 
-        opts, args = getopt.getopt(sys.argv[1:],"i:t:g:l:hv",["info=","tagged-text=", "graphs=", "lang=","help","version"])
+        opts, args = getopt.getopt(sys.argv[1:],"i:p:t:g:l:hv",["info=","pos-chart=", "tagged-text=", "graphs=", "lang=","help","version"])
     except getopt.GetoptError:
         print(error)
         sys.exit(2)
@@ -36,6 +38,8 @@ def processArgs():
             sys.exit()
         elif opt in ("-i", "--info"):
             info_out = arg
+        elif opt in ("-p", "--pos-chart"):
+            pos_chart_out = arg
         elif opt in ("-t", "--tagged-text"):
             tagged_text_out = arg
         elif opt in ("-g", "--graphs"):
@@ -43,7 +47,7 @@ def processArgs():
         elif opt in ("-l", "--lang"):
             lang = arg
     
-    if info_out or tagged_text_out or graphs_out:
+    if info_out or pos_chart_out or tagged_text_out or graphs_out:
         if len(args) == 1:
             inputfile = args[0]
         else:
@@ -53,13 +57,13 @@ def processArgs():
         print(error)
         sys.exit(2)
 
-    return info_out, tagged_text_out, graphs_out, lang, inputfile
+    return info_out, pos_chart_out, tagged_text_out, graphs_out, lang, inputfile
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global lang, nlp, tagged_text, info, graphs
+    global lang, nlp, tagged_text, info, graphs, bar_chart
     if request.method == 'POST':
         lang = request.values.get('lang')
         entities = request.form.getlist('entity')
@@ -68,6 +72,7 @@ def index():
         doc = nlp[lang](request.values.get('input'))
         tagged_text = generate_tagged_text(doc, type = 'html', entities = entities)
         info = generate_information(doc, nlp[lang].vocab)
+        bar_chart = generate_pos_chart(doc, None, type='html')
         graphs = '\n'.join(generate_dependencies_graph(doc, type = 'html'))
         return redirect(url_for('tagged_text_form'))
     return render_template('index.html', lang=lang)
@@ -83,10 +88,10 @@ def tagged_text_form():
 
 @app.route('/info_form', methods=['GET', 'POST'])
 def info_form():
-    global info
+    global info, bar_chart
     if request.method == 'POST':
         return redirect(url_for('index'))
-    return render_template('info_form.html', table=info)
+    return render_template('info_form.html', table=info, bar_chart=bar_chart)
 
 
 @app.route('/graphs_form', methods=['GET', 'POST'])
@@ -99,7 +104,7 @@ def graphs_form():
 
 if __name__ == '__main__':
     global tagged_text, info, graphs
-    info_out, tagged_text_out, graphs_out, lang, inputfile = processArgs()
+    info_out, pos_chart_out, tagged_text_out, graphs_out, lang, inputfile = processArgs()
     if inputfile:
         if lang == 'en':
             nlp = spacy.load('en_core_web_lg')
@@ -114,6 +119,8 @@ if __name__ == '__main__':
             else:
                 with open(info_out, 'w') as fd:
                     fd.write(output)
+        if pos_chart_out:
+            generate_pos_chart(doc, pos_chart_out, type='pict')
         if tagged_text_out:
             output = generate_tagged_text(doc, 'text', nlp.vocab)
             if tagged_text_out == 'shell':
