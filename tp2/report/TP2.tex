@@ -47,7 +47,7 @@
 \vspace{0.8cm}
 \HRule \\[0.6cm]
 { \huge \bfseries TP2}\\[0.4cm] % Title of your document
-{ \Large \bfseries Spacy's POS Tagging}\\[0.4cm] % Subtitle of your document
+{ \Large \bfseries spaCy's POS Tagging}\\[0.4cm] % Subtitle of your document
 \HRule \\[1.0cm]
  
 %----------------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ A77364 - Mafalda Nunes\\[1.3cm]
 \vspace{0.5cm}
 
 \begin{abstract}
-O presente relatório tem com objetivo a aprendizagem das funcionalidades da ferramenta \textit{Spacy}. Para tal, apresentar-se-á uma descrição da mesma, mais especificamente da
+O presente relatório tem com objetivo a aprendizagem das funcionalidades da ferramenta \textit{spaCy}. Para tal, apresentar-se-á uma descrição da mesma, mais especificamente da
 funcionalidade de POS \textit{tagging}, bem como um pequeno exemplo que demonstre como utilizar a ferramenta.
 
 Este trabalho pretende dar resposta ao trabalho prático 2, proposto na unidade curricular SPLN, do Mestrado em Engenharia Informática, da Universidade do Minho.
@@ -94,7 +94,7 @@ Este trabalho pretende dar resposta ao trabalho prático 2, proposto na unidade 
 \let\oldref\ref
 \renewcommand{\ref}[1]{\smash{\underline{\oldref{#1}}}}
 
-\section{Spacy's}
+\section{spaCy's}
 
 spaCy é uma biblioteca \textit{open-source} para o processamento de linguagem natural em \textit{Python}. É uma aplicação desenvolvida especificamente para o uso em ambientes
 de produção, que não só processa mas também ajuda a "compreender" grandes volumes de texto. Dentro deste contexto, pode ser utilizada em muitas vertentes, desde a extração de
@@ -104,13 +104,27 @@ conhecimento, obtenção de conhecimento léxico sobre linguagens, ou pré-proce
 % https://spacy.io/usage/spacy-101
 % https://spacy.io/usage/v2
 
-\subsection{Arquitetura}
+\subsection{Arquitetura} % Mafalda
 
 % https://spacy.io/api/
 
 \subsection{Funcionalidades}
 
+% Tokenization - João
+% Part-of-speech (POS) Tagging - Mafalda
+% Dependency Parsing - João
+% Lemmatization - Mafalda
+% Sentence Boundary Detection (SBD) - João
+% Named Entity Recognition (NER) - Mafalda
+% Similarity - João
+% Text Classification - Mafalda
+% Rule-based matching - João
+% Training - Mafalda
+% Serialization - João
+
 % Falar de forma relativamente geral, mas com imagens para se perceber (informação de POS tagging pode ser aprofundada e utilizada na próxima secção)
+
+% fala um bocadinho mais de reconhecimento de entidades e grafos de dependencias
 
 % https://spacy.io/usage/spacy-101
 % https://spacy.io/usage/linguistic-features
@@ -128,13 +142,13 @@ conhecimento, obtenção de conhecimento léxico sobre linguagens, ou pré-proce
 % https://towardsdatascience.com/a-review-of-named-entity-recognition-ner-using-automatic-summarization-of-resumes-5248a75de175
 
 
-\subsection{Vantagens}
+\subsection{Vantagens} % Mafalda
 
 % https://spacy.io/usage/facts-figures
 % https://www.analyticsvidhya.com/blog/2017/04/natural-language-processing-made-easy-using-spacy-%E2%80%8Bin-python/
 % https://medium.com/@brianray_7981/ai-in-practice-identifying-parts-of-speech-in-python-8a690c7a1a08
 
-\subsection{Utilização}
+\subsection{Utilização} % João
 
 % https://spacy.io/api/cli
 % https://spacy.io/usage/
@@ -146,23 +160,27 @@ conhecimento, obtenção de conhecimento léxico sobre linguagens, ou pré-proce
 % https://spacy.io/usage/examples
 % https://github.com/explosion/spacy/blob/master/examples/information_extraction/entity_relations.py
 
+% grafos de dependencias Mafalda
+% reconhecimento de entidades João
+% exceção de tokens Mafalda
+% exemplos da net João
 
-% Implementar?
-% https://books.google.pt/books?id=48RiDwAAQBAJ&pg=PA80&lpg=PA80&dq=spacy+attrs&source=bl&ots=R2y5H5s6e5&sig=33zo94rAGOHBR5PxOH51J1GrBGM&hl=pt-PT&sa=X&ved=2ahUKEwiNlpbKoO_eAhWmJcAKHetlCfQ4ChDoATAAegQICRAB#v=onepage&q=spacy%20attrs&f=false
-
-
-\section{Spacy's POS Tagging}
+\section{spaCy's POS Tagging} % Mafalda
 
 % Aprofundar tema usando websites relevantes indicados nas funcionalidades
 
+\subsection{Utilização} % João
 
-\subsection{Utilização}
+% exemplo com uma frase
+% palavra: pos
+% codigo
 
-
-\section{Exemplo Demonstrativo}
+\section{Exemplo Demonstrativo} % Mafalda
 
 % Falar das funções que desenvolvemos
 
+% Implementar?
+% https://books.google.pt/books?id=48RiDwAAQBAJ&pg=PA80&lpg=PA80&dq=spacy+attrs&source=bl&ots=R2y5H5s6e5&sig=33zo94rAGOHBR5PxOH51J1GrBGM&hl=pt-PT&sa=X&ved=2ahUKEwiNlpbKoO_eAhWmJcAKHetlCfQ4ChDoATAAegQICRAB#v=onepage&q=spacy%20attrs&f=false
 
 
 
@@ -178,8 +196,6 @@ conhecimento, obtenção de conhecimento léxico sobre linguagens, ou pré-proce
 \appendixpage
 \renewcommand{\thesubsection}{\Alph{subsection}}
 
-% Questão 1
-
 %\subsection{Título}
 %\label{anexo:nome}
 %\begin{figure}[!ht]
@@ -191,8 +207,6 @@ conhecimento, obtenção de conhecimento léxico sobre linguagens, ou pré-proce
 \newpage
 
 \begin{thebibliography}{99}
-	
-	% Questão 1
 	
 	\bibitem{linkname}
 	Autor,
