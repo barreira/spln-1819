@@ -10,8 +10,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 from matplotlib import pyplot as plt
 
-# https://spacy.io/usage/linguistic-features
-
+# Gerar tabelas (auxiliares)
 def generate_html_table(headers, data):
     res = '<table class="table table-striped">\n'
     res += '  <thead><tr><th>' + '    </th><th>'.join(headers) + '  </th></tr></thead>\n  <tbody>\n'
@@ -43,6 +42,7 @@ def generate_pos_chart(doc, filename='pos_frequence.svg', type='html'):
         plt.barh(range(1,len(pos_tags)+1), pos_freq, tick_label=pos_tags)
         plt.savefig(filename)
 
+# Get token's information
 def generate_information(doc, vocab, type='html'):
     # python3 -m spacy download pt
     headers = ["Text","Lemma", "POS", "TAG", "DEP", "SHAPE", "MORPHOLOGIAL INFO", "IS_ALPHA", "IS_STOP"]
@@ -114,6 +114,5 @@ def generate_tagged_text(doc, type = 'server', entities = None, colors = None):
 def add_tokenizer_exceptions(nlp, tokens, tokenizer=None):
     if not tokenizer:
         tokenizer = nlp.tokenizer
-    # tokens = [{'word': [{ORTH: 'word[0..p]',...}, {ORTH: 'word[p..n]', LEMMA: 'valor',...}]},{...}]
     for token, token_attrs in tokens.items():
         tokenizer.add_special_case(token, token_attrs)

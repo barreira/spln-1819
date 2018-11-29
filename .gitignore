@@ -5,6 +5,7 @@
 *.toc
 *.fdb_latexmk
 *.synctex.*
+_minted-*
 
 __pycache__/
 venv/
