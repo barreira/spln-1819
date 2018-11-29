@@ -112,7 +112,7 @@ def generate_tagged_text(doc, type = 'server', entities = None, colors = None):
     else:
         res_list = []
         for word in doc:
-            if word.ent_type_:
+            if word.ent_type_ and not str(word).isspace():
                 res_list.append(str(word) + '{' + word.ent_type_ + '}')
             else:
                 res_list.append(str(word))
