@@ -1,9 +1,19 @@
+# coding=utf-8
 import sys
 import getopt
 import json
 import spacy
 from pos_tagging import *
 from flask import Flask, request, url_for, redirect, render_template
+
+''' Web app and terminal client to use spaCy's features
+
+Either launches the web app (if no parameters are provided) or takes an input file and produces output to file or the
+terminal. This output can be: a table with information about tokens, a bar chart with POS tag frequence, a text tagged
+with entities or a dependency graph.
+
+Multi-language support via the -l/--lang parameter.
+'''
 
 # Processar argumentos do comando
 def processArgs():
@@ -142,3 +152,6 @@ if __name__ == '__main__':
         info = ''
         graphs = ''
         app.run()
+
+__author__ = "João Barreira, Mafalda Nunes"
+__email__  = "a73831@alunos.uminho.pt, a77364@alunos.uminho.pt"

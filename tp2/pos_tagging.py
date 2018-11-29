@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 import re
 import pandas as pd
@@ -9,6 +10,14 @@ from prettytable import PrettyTable
 import matplotlib as mpl
 mpl.use('Agg')
 from matplotlib import pyplot as plt
+
+''' Implementation of spaCy's functionality
+
+Collection of functions that implement some of spaCy's functionality: part-of-speech (POS) tagging, entity recognition,
+information about tokens, dependency visualization and token exceptions.
+
+These functions support both the web app as well as the terminal client.
+'''
 
 # Gerar tabelas (auxiliares)
 def generate_html_table(headers, data):
@@ -68,7 +77,7 @@ def generate_information(doc, vocab, type='html'):
 
 
 # Dependencies Graph
-def generate_dependencies_graph(doc, type='service', compact = False, background='white', 
+def generate_dependencies_graph(doc, type='service', compact = False, background='white',
                                             color='black', font='Source Sans Pro'):
     res = []
     if type in ('service', 'html', 'pict'):
@@ -116,3 +125,6 @@ def add_tokenizer_exceptions(nlp, tokens, tokenizer=None):
         tokenizer = nlp.tokenizer
     for token, token_attrs in tokens.items():
         tokenizer.add_special_case(token, token_attrs)
+
+__author__ = "João Barreira, Mafalda Nunes"
+__email__  = "a73831@alunos.uminho.pt, a77364@alunos.uminho.pt"
