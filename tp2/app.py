@@ -2,7 +2,6 @@
 import sys
 import getopt
 import json
-import spacy
 from pos_tagging import *
 from flask import Flask, request, url_for, redirect, render_template
 

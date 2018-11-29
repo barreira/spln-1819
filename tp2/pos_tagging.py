@@ -1,11 +1,7 @@
 # coding=utf-8
-import os
 import re
-import pandas as pd
 import spacy
 from spacy import displacy
-from spacy.util import update_exc
-from pathlib import Path
 from prettytable import PrettyTable
 import matplotlib as mpl
 mpl.use('Agg')
