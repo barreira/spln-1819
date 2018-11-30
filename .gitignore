@@ -7,6 +7,8 @@
 *.synctex.*
 _minted-*
 
+tp1/search/
+
 __pycache__/
 venv/
 
