@@ -17,7 +17,7 @@ python3 setup.py sdist bdist_wheel
 Install module with tar.gz file
 
 ```
-pip3 install --user ./dist/spacy_features-0.0.1.tar.gz
+pip3 install --user ./dist/spacy_pos_tagging-0.0.1.tar.gz
 ```
 
 ```
