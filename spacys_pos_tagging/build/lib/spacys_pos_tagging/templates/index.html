@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>spaCy's POS Tagging</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <style>
+    .mytooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+    }
+    
+    .mytooltip .mytooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        
+        /* Position the mytooltip */
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        right: 105%;
+    }
+    
+    .mytooltip:hover .mytooltiptext {
+        visibility: visible;
+    }
+  </style>
+</head>
+
+<body onload="initLanguage()">
+  <!-- Header -->
+  <header class="w3-container w3-theme w3-padding" id="myHeader">
+    <div class="w3-center" , style="margin-bottom: 30px">
+      <h4>Scripting no Processamento de Linguagem Natural</h4>
+      <h1 class="w3-xxxlarge w3-animate-bottom">spaCy's POS Tagging</h1>
+    </div>
+  </header>
+
+  <!-- Input -->
+  <div class="w3-row-padding" style="margin: 30px 30px 30px 30px;">
+    <div>
+      <form class="w3-container w3-card-4" method="POST">
+        <h2 class="w3-center">Input Form</h2>
+        <div style="display: flex; justify-content: space-between;">
+          <!-- Linguagem -->
+          <div class="w3-section" style="height: 25px; margin-left: 10px; margin-right: 30px;">
+            <label style="display: block">Language</label>
+            <select id="lang" name="lang" onchange="changeEntities()">
+              <option value="pt">Português</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <!-- Entidades -->
+          <div class="w3-section" style="margin-right: 10px;">
+            <label style="display: block">Entities</label>
+            <div id='entities'>
+            </div>
+          </div>
+        </div>
+        <!-- Botão de adição/alteração de token -->
+        <div class="w3-section w3-center">
+          <button class="w3-btn" id="tokenButton" type="button" style="border: 2px solid #ccc" data-toggle="modal"
+            data-target="#token_excp" value="">Add/Modify Token</button>
+          <textarea id="tokenExceptions" name="tokenExceptions" rows="0" hidden>{}</textarea>
+        </div>
+        <!-- Ficheiro de Input -->
+        <div class="w3-section" style="width: 35%">
+          <label>Select File</label>
+          <input class="w3-input" style="background-color: white; border-color: white" type="file" id="filename"
+            onchange="handleFiles(this.files)">
+        </div>
+        <!-- Texto de Input -->
+        <div class="w3-section">
+          <label>Input Text</label>
+          <textarea class="w3-input" id="input" name="input" style="border: 2px solid #ccc" rows="15"></textarea>
+        </div>
+        <!-- Botão de submissão -->
+        <div class="w3-section w3-center">
+          <button class="w3-btn" id="submitButton" style="border: 2px solid #ccc" type="submit">Generate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+
+  <!-- Modal -->
+  <div class="modal fade" id="token_excp" role="dialog">
+    <div class="modal-dialog" style="overflow-y: initial !important">
+      <!-- Modal content-->
+      <!-- ['IS_ALPHA', 'IS_ASCII', 'IS_DIGIT', 'IS_LOWER', 'IS_PUNCT', 'IS_SPACE', 'IS_TITLE', 'IS_UPPER', 'LIKE_URL', 'LIKE_NUM', 'LIKE_EMAIL', 'IS_STOP', 'IS_OOV', 'IS_BRACKET', 'IS_QUOTE', 'IS_LEFT_PUNCT', 'IS_RIGHT_PUNCT', 'IS_CURRENCY', 'ID', 'ORTH', 'LOWER', 'NORM', 'SHAPE', 'PREFIX', 'SUFFIX', 'LENGTH', 'CLUSTER', 'LEMMA', 'POS', 'TAG', 'DEP', 'ENT_IOB', 'ENT_TYPE', 'HEAD', 'SENT_START', 'SPACY', 'PROB', 'LANG'] -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Token Exception</h4>
+        </div>
+        <div class="modal-body" style="height: 500px; overflow-y: auto;">
+          <form class="w3-container">
+            <table id="token_excp_table" width="100%" style="border-collapse: separate; border-spacing: 5px">
+              <tbody>
+                {%
+                  set characteristics =  [('Token', 'Token whose characteristics will be changed.'),
+                                      ('ORTH', 'ID of the verbatim text content.'),
+                                      ('IS_ALPHA', 'Does the token consist of alphabetic characters?'),
+                                      ('IS_ASCII', 'Does the token consist of ASCII characters?'),
+                                      ('IS_DIGIT', 'Does the token consist of digits?'),
+                                      ('IS_LOWER', 'Is the token in lowercase?'),
+                                      ('IS_PUNCT', 'Is the token punctuation?'),
+                                      ('IS_SPACE', 'Does the token consist of whitespace characters?'),
+                                      ('IS_TITLE', 'Is the token in titlecase?'),
+                                      ('IS_UPPER', 'Is the token in uppercase?'),
+                                      ('LIKE_URL', 'Does the token resemble a URL?'),
+                                      ('LIKE_NUM', 'Does the token represent a number?'),
+                                      ('LIKE_EMAIL', 'Does the token resemble an email address?'),
+                                      ('IS_STOP', 'Is the token part of a "stop list"?'),
+                                      ('IS_OOV', 'Is the token out-of-vocabulary?'),
+                                      ('IS_BRACKET', 'Is the token a bracket?'),
+                                      ('IS_QUOTE', 'Is the token a quotation mark?'),
+                                      ('IS_LEFT_PUNCT', 'Is the token a left punctuation mark, e.g. (?'),
+                                      ('IS_RIGHT_PUNCT', 'Is the token a right punctuation mark, e.g. ]?'),
+                                      ('IS_CURRENCY', 'Is the token a currency symbol?'),
+                                      ('LOWER', 'Lowercase form of the token.'),
+                                      ('NORM', 'The token\'s norm, i.e. a normalised form of the token text.'),
+                                      ('SHAPE', 'Transform of the tokens\'s string, to show orthographic features. For example, "Xxxx" or "dd".'),
+                                      ('PREFIX', 'Hash value of a length-N substring from the start of the token. Defaults to N=1.'),
+                                      ('SUFFIX', 'Hash value of a length-N substring from the end of the token. Defaults to N=3.'),
+                                      ('CLUSTER', 'Brown cluster ID.'),
+                                      ('LEMMA', 'Base form of the token, with no inflectional suffixes.'),
+                                      ('POS', 'Coarse-grained part-of-speech.'),
+                                      ('TAG', 'Fine-grained part-of-speech.'),
+                                      ('DEP', 'Syntactic dependency relation.'),
+                                      ('ENT_IOB', 'IOB code of named entity tag. "B" means the token begins an entity, "I" means it is inside an entity, "O" means it is outside an entity, and "" means no entity tag is set.'),
+                                      ('ENT_TYPE', 'Named entity type.'),
+                                      ('HEAD', 'The syntactic parent, or "governor", of this token.'),
+                                      ('SENT_START', 'A boolean value indicating whether the token starts a sentence. None if unknown.'),
+                                      ('PROB', 'Smoothed log probability estimate of token\'s type.'),
+                                      ('LANG', 'Language of the parent document\'s vocabulary.')]
+                %}
+                {% for c, desc in characteristics: %}
+                <tr>
+                  <!--<div class="w3-section">-->
+                    <td>{{ c }}</td>
+                    <td width="70%">
+                      <input class="w3-input" type="text" id="{{ c }}" name="{{ c }}" style="border: 2px solid #ccc; display: inline-block" value="">
+                    </td>
+                    <td>
+                      <div class="mytooltip">
+                        <i class="fas fa-question-circle"></i>
+                        <span class="mytooltiptext">{{ desc }}</span>
+                      </div>
+                    </td>
+                  </div>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <table>
+            <tbody>
+              <tr>
+                <td style="text-align: left; ">
+                  <p style="margin-bottom: 5px">* Concatenated ORTH elements must be equal to the inserted Token</p>
+                  <p>** All fields, except Token, must be separated with ';'</p>
+                </td>
+                <td width=35%>
+                  <button type="button" class="btn btn-default" onclick="saveTokenExcp()">Confirm</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="w3-container w3-theme-dark w3-padding-16">
+    <h3>Grupo 7</h3>
+    <p>&emsp;A73831 - João Miguel Pires Barreira</p>
+    <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+      <span class="w3-text w3-theme-light w3-padding">Go To Top</span>
+      <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
+          <i class="fa fa-chevron-circle-up"></i></span></a>
+    </div>
+    <p>&emsp;A77364 - Mafalda Guimarães Nunes</p>
+  </footer>
+
+  <!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
+  <script>
+    // Read Input File
+    function handleFiles(files) {
+      var fileToLoad = files[0];
+      var fileReader = new FileReader();
+      fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        document.getElementById("input").innerHTML = textFromFileLoaded;
+      };
+      fileReader.readAsText(fileToLoad, "UTF-8");
+    }
+
+    function changeEntities() {
+      document.getElementById('entities').innerHTML = ''
+      var entities = {
+        'pt': ['ORG', 'PER', 'MISC', 'LOC'],
+        'en': ['ORG', 'MONEY', 'QUANTITY', 'ORDINAL', 'LAW', 'WORK_OF_ART', 'EVENT', 'PRODUCT', 'LANGUAGE', 'DATE', 'PERCENT', 'TIME', 'GPE', 'NORP', 'FAC', 'CARDINAL', 'PERSON', 'LOC']
+      }
+      var option_list = document.getElementById('lang')
+      var lang = option_list.options[option_list.selectedIndex].value
+      var ents = entities[lang]
+      for (var i = 0; i < ents.length; i++) {
+        var div = document.createElement('div')
+        div.style = 'display: inline-block; margin-right: 10px;'
+        div.innerHTML = '<input type="checkbox" name="entity" value="' + ents[i] + '" checked> \
+                          <label for="scales">' + ents[i] + '</label>'
+        document.getElementById('entities').appendChild(div)
+      }
+    }
+
+    function initLanguage() {
+      document.getElementById('lang').value = '{{ lang }}'
+      changeEntities()
+    }
+
+    function saveTokenExcp() {
+      var characteristics = JSON.parse(document.getElementById('tokenExceptions').innerHTML)
+      var table = $('#token_excp_table').find('tbody').find('tr')
+      var pos_table = characteristics.length
+      var token = ''
+
+      for (var i=0; i<table.length; i++) { 
+        var input = $(table[i]).find('td')[1].children[0]
+        if (input.id == 'Token') {
+          token = input.value
+          characteristics[token] = []
+        }
+        else if (input.id == 'ORTH') {
+          var orth = input.value.split(';')
+          for (var j=0; j<orth.length; j++) {
+            var dict = {}
+            dict['ORTH'] = orth[j]
+            characteristics[token].push(dict)
+          } 
+        }
+        else {
+          if (input.value != '') {
+            var characteristic = input.value.split(';')
+            for (var j=0; j<characteristic.length; j++) {
+              var name = input.id
+              characteristics[token][j][name] = characteristic[j]
+            } 
+          }
+        }
+        input.value = ''
+      }
+      
+      document.getElementById('tokenExceptions').innerHTML = JSON.stringify(characteristics)
+      $('#token_excp').modal('hide')
+    }
+  </script>
+
+</body>
+
+</html>

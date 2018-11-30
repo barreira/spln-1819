@@ -1,0 +1,5 @@
+#!/usr/bin/python3
+
+import spacys_pos_tagging
+
+spacys_pos_tagging.process_args()

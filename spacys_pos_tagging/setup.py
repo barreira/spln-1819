@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -11,17 +13,12 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/barreira/spacys_pos_tagging",
     packages=setuptools.find_packages(),
-    scripts=['spacys_pos_tagging/bin/spacys_features.py'],
-    include_package_date=True,
+    scripts=['bin/spacys_features'],
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
         "Topic :: Natural Language Processing"
     ],
-    entry_points={
-        'console_scripts': [
-            'execute=spacys_pos_tagging.app:execute'
-        ]
-    },
-    install_requires=['Flask', 'spacy', 'matplotlib', 'prettytable']
+    install_requires=['spacys_pos_tagging','Flask', 'spacy', 'msgpack==0.5.6', 'matplotlib', 'prettytable']
 )

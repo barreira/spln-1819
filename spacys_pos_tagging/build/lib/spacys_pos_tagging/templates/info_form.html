@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>spaCy's POS Tagging - Information</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStacked);
+
+    function drawStacked() {
+      var data = google.visualization.arrayToDataTable(eval("{{bar_chart|safe}}"));
+
+      var options = {
+        title: 'POS Tags Frequence',
+        width: 1200,
+        height: 600,
+        isStacked: true,
+        hAxis: {
+          title: 'POS Tags Frequence (%)',
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'POS Tag'
+        },
+        legend: { position: 'none' }
+      };
+      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+  </script>
+
+</head>
+
+<body>
+
+  <!-- Side Navigation -->
+  <nav class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="width: 20%; font-size: 16px; padding-top: 5%; display: none;"
+    id="sidebar">
+    <h1 class="w3-text-theme w3-center" style="margin-bottom: 15px">MENU</h1>
+    <a href="tagged_text_form" class="w3-bar-item w3-button"> &#09; &#09; &#09;<i class="fa fa-align-justify"></i>
+      Tagged Text</a>
+    <a href="#" class="w3-bar-item w3-button"> &#09; &#09; &#09;<i class="fa fa-info-circle"></i> Information </a>
+    <a href="graphs_form" class="w3-bar-item w3-button"> &#09; &#09; &#09;<i class="fa fa-arrow-circle-right"></i>
+      Dependencies Graphs</a>
+  </nav>
+
+
+  <!-- Header -->
+  <header class="w3-container w3-theme w3-padding" id="myHeader">
+    <i id='sidebarButton' class="fa fa-bars w3-xlarge w3-button w3-theme"></i>
+    <div class="w3-center" , style="margin-bottom: 30px">
+      <h4>Scripting no Processamento de Linguagem Natural</h4>
+      <h1 class="w3-xxxlarge w3-animate-bottom">spaCy's POS Tagging</h1>
+    </div>
+  </header>
+
+  <!-- Information -->
+  <div>
+    <h2 class="w3-center" style="margin-bottom: 20px">Information</h2>
+    <!-- Bar chart -->
+    <div id="chart_div" style="margin-top: -20px; display: flex; justify-content: center;"></div>
+    <br>
+    <!-- Table -->
+    <div style="margin: 30px; overflow: auto; left: 0; right: 0">
+      {{ table|safe }}
+    </div>
+    <div class="w3-section w3-center">
+      <form method="POST">
+        <button class="w3-btn" id="submitButton" style="border: 2px solid #ccc" type="submit">Return</button>
+      </form>
+    </div>
+  </div>
+  <hr>
+
+
+  <!-- Footer -->
+  <footer class="w3-container w3-theme-dark w3-padding-16">
+    <h3>Grupo 7</h3>
+    <p>&#09;A73831 - João Miguel Pires Barreira</p>
+    <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+      <span class="w3-text w3-theme-light w3-padding">Go To Top</span>
+      <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
+          <i class="fa fa-chevron-circle-up"></i></span></a>
+    </div>
+    <p>&#09;A77364 - Mafalda Guimarães Nunes</p>
+  </footer>
+
+  <!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
+  <script>
+    // Read Input File
+    function handleFiles(files) {
+      var fileToLoad = files[0];
+      var fileReader = new FileReader();
+      fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        document.getElementById("input").innerText = textFromFileLoaded;
+      };
+      fileReader.readAsText(fileToLoad, "UTF-8");
+    }
+
+    // Side navigation
+    window.onload = function () {
+      var sidebar = document.getElementById('sidebar');
+      document.onclick = function (e) {
+        if (e.target.id !== 'sidebar' && e.target.id !== 'sidebarButton') {
+          sidebar.style.display = 'none';
+        }
+        else {
+          sidebar.style.display = 'block';
+        }
+      };
+    };
+
+  </script>
+
+</body>
+
+</html>

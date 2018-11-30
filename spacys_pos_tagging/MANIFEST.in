@@ -1,0 +1,4 @@
+include spacys_pos_tagging/templates/index.html
+include spacys_pos_tagging/templates/tagged_text_form.html
+include spacys_pos_tagging/templates/info_form.html
+include spacys_pos_tagging/templates/graphs_form.html
