@@ -130,7 +130,7 @@ def process_args():
     lang = 'pt'
     inputfile = ''
 
-    error = 'USAGE:\tpython3 app.py [(-i <outputfile> | -p <outputfile> | -t <outputfile> | ' + \
+    error = 'USAGE:\tspacys_features app.py [(-i <outputfile> | -p <outputfile> | -t <outputfile> | ' + \
             '-g <outputfile>) [-l <language>] <inputfile>]\n\n' + \
             'OPTIONS:\n' + \
             '\t-l\tlanguage - \'pt\' (default) or \'en\'\n' + \
