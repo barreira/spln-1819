@@ -14,7 +14,7 @@
 \usepackage[toc,page]{appendix}
 \usepackage{indentfirst}
 \usepackage[table,xcdraw]{xcolor}
-\usepackage[margin=4cm]{geometry}
+\usepackage[margin=3.5cm]{geometry}
 \usepackage{pifont}
 \usepackage{minted}
 
@@ -82,16 +82,16 @@ A77364 - Mafalda Nunes\\[1.3cm]
 
 \end{titlepage}
 
-\vspace{0.5cm}
+\vspace{1.0cm}
 
 \begin{abstract}
 O presente relatório tem com objetivo a aprendizagem das funcionalidades da ferramenta \textit{spaCy}. Para tal, apresentar-se-á uma descrição da mesma, mais especificamente da
 funcionalidade de POS \textit{tagging}, bem como um pequeno exemplo que demonstre como utilizar a ferramenta.
 
-Este trabalho pretende dar resposta ao trabalho prático 2, proposto na unidade curricular SPLN, do Mestrado em Engenharia Informática, da Universidade do Minho.
+Este trabalho pretende dar resposta ao trabalho prático 2, proposto na unidade curricular SPLN, do Mestrado Integrado em Engenharia Informática, da Universidade do Minho.
 \end{abstract}
 
-\vspace{0.5cm}
+\vspace{1.0cm}
 
 \tableofcontents
 
@@ -118,7 +118,7 @@ As estruturas de dados centrais do spaCy são o \textit{Doc} e o \textit{Vocab}.
 \begin{figure}[!ht]
 	\centering
 	\setlength{\abovecaptionskip}{-.2cm}
-	\makebox[\textwidth][c]{\includegraphics[width=12.8cm]{Pictures/arquitetura}}
+	\makebox[\textwidth][c]{\includegraphics[width=13.8cm]{Pictures/arquitetura}}
 	\caption{Esquema da arquitetura do spaCy}
 	\label{figure:arquitetura}
 \end{figure}
@@ -148,17 +148,13 @@ O objeto \textit{Vocab} possui um conjunto de tabelas de \textit{look-up}, que t
 
 Também para poupar memória, o spaCy codifica todas as \textit{strings} para valores de \textit{hash}, que são acessíveis a partir do \textit{StringStore}, que corresponde a um \textit{map} de \textit{strings} de e para valores de \textit{hash}. Internamente, o spaCy apenas trabalha com valores de \textit{hash} (figura \ref{figure:doc-vocab-stringstore}).
 
-\bigskip
-
 \begin{figure}[!ht]
 	\centering
 	\setlength{\abovecaptionskip}{-.5cm}
-	\makebox[\textwidth][c]{\includegraphics[width=14cm]{Pictures/doc-vocab-stringstore}}
+	\makebox[\textwidth][c]{\includegraphics[width=12cm]{Pictures/doc-vocab-stringstore}}
 	\caption{Representação esquemática dos objetos \textit{Doc}, \textit{Vocab} e \textit{String Store}}
 	\label{figure:doc-vocab-stringstore}
 \end{figure}
-
-
 
 % https://spacy.io/api/
 
@@ -170,26 +166,25 @@ As principais funcionalidades desta biblioteca são sumarizadas de seguida:
 \vspace*{-0.3cm}
 \begin{itemize}\itemsep1pt
 	\setlength{\itemindent}{+.5cm}	
-	\item \texttt{\textit{Tokenization}} -- Separação de textos em segmentos significativos, como palavras, pontuação,  entre outros. Esta divisão é efetuada tendo em conta regras específicas de cada linguagem. O \textit{input} corresponde a um texto limpo e o \textit{output} um objeto \textit{Doc}.
+	\item \texttt{\textit{Tokenization}} -- Separação de textos em segmentos significativos, como palavras, pontuação,  entre outros. Esta divisão é efetuada tendo em conta regras específicas de cada linguagem. O \textit{input} corresponde a um texto limpo e o \textit{output} a um objeto \textit{Doc}.
 	
-	\item \texttt{\textit{POS Tagging}} -- atribuir tipos de palavras ou propriedades gramaticais (como verbo ou nome) a \textit{tokens}, que constituem um \textit{Doc}. O spaCy recorre a modelos estatísticos para prever quais as \textit{tags} ou etiquetas que mais provavelmente se aplicam ao contexto currente. As anotações linguísticas do tipo POS são obtidas a partir do atributo \textit{pos\_} do \textit{Token}.
+	\item \texttt{\textit{POS Tagging}} -- Atribuir tipos de palavras ou propriedades gramaticais (como verbo ou nome) a \textit{tokens}, que constituem um \textit{Doc}. O spaCy recorre a modelos estatísticos para prever quais as \textit{tags} ou etiquetas que mais provavelmente se aplicam ao contexto currente. As anotações linguísticas do tipo POS são obtidas a partir do atributo \textit{pos\_} do \textit{Token}.
 	
-	\item \texttt{\textit{Dependency Parsing}} -- Processo de obtenção de relações de dependência entre os elementos de uma frase através de um \textit{parser}. Este \textit{parser} possibilita a iteração do texto \textit{tokenizado} (\textit{Doc}) pelas suas frases nominais, sendo que as dependências são dispostas numa árvore de fácil manipulação. É ainda possível visualizar mais facilmente as dependências de um ou mais \textit{Docs} através de um grafo, cujos arcos possuem uma legenda que caracteriza a ligação sintática entre os \textit{tokens}. 
+	\item \texttt{\textit{Dependency Parsing}} -- Processo de obtenção de relações de dependência entre os elementos de uma frase através de um \textit{parser}. Este \textit{parser} possibilita a iteração pelas frases nominais do texto \textit{tokenizado} (\textit{Doc}), sendo que as dependências são dispostas numa árvore de fácil manipulação. É ainda possível visualizar mais facilmente as dependências de um ou mais \textit{Docs} através de um grafo, cujos arcos possuem uma legenda que caracteriza a ligação sintática entre os \textit{tokens}. 
 	
-	\item \texttt{\textit{Lemmatization}} -- redução de palavras à sua formas base, sendo frequentemente utilizado para standardizar palavras com significados similares. O \textit{lemma} de 'era' e 'foi', e.g., é 'ser'. Pode-se aceder ao \textit{lemma} através do atributo \textit{lemma\_} do \textit{Token}.
+	\item \texttt{\textit{Lemmatization}} -- Redução de palavras à sua formas base, sendo frequentemente utilizado para standardizar palavras com significados similares. O \textit{lemma} de 'era' e 'foi', e.g., é 'ser'. Pode-se aceder ao \textit{lemma} através do atributo \textit{lemma\_} do \textit{Token}.
 	
-	\item \texttt{\textit{Sentence Boundary Detection (SBD)}} -- Processo de separação de frases de um texto separado pelos seus \textit{tokens} (\textit{Doc}). É utilizado o \textit{parsing} de dependências para uma divisão mais correta. Possibilita a definição manual dos limites frásicos (i.e. \textit{boundaries})
-	em detrimento dos pré-definidos '.', '!' e '?'.
+	\item \texttt{\textit{Sentence Boundary Detection (SBD)}} -- Processo de separação de frases de um texto (\textit{Doc}) pelos seus \textit{tokens}. É utilizado o \textit{parsing} de dependências para uma divisão mais correta. Possibilita a definição manual dos limites frásicos (i.e. \textit{boundaries})	em detrimento dos pré-definidos '.', '!' e '?'.
 	
-	\item \texttt{\textit{Named Entity Recognition (NER)}} - atribuição de etiquetas ou categorias pré-definidas a nomes correspondentes a objetos do mundo real, como pessoas, companhias, localizações, países, produtos, entre outros. O spaCy reconhece vários tipos de nomes de entidades num documento, através da solicitação de uma previsão ao modelo. Como estes modelos são estatísticos e muito dependentes dos textos com que foram treinados, nem sempre esta previsão é correta, podendo ser necessário posterior processamento específico para o caso em estudo. Os nomes das entidades estão disponíveis na propriedade \textit{ents} de um \textit{Doc} ou na propriedade \textit{ent\_type\_} de um \textit{Token}. Quando se pretende alterar anotações de entidades, tem de se o faze a nível do documento, de forma a assegurar que a sequência de anotações de \textit{tokens} permanece consistente.
+	\item \texttt{\textit{Named Entity Recognition (NER)}} - Atribuição de etiquetas ou categorias pré-definidas a nomes correspondentes a objetos do mundo real, como pessoas, companhias, localizações, países, produtos, entre outros. O spaCy reconhece vários tipos de nomes de entidades num documento, através da solicitação de uma previsão ao modelo. Como estes modelos são estatísticos e muito dependentes dos textos com que foram treinados, nem sempre esta previsão é correta, podendo ser necessário posterior processamento específico para o caso em estudo. Os nomes das entidades estão disponíveis na propriedade \textit{ents} de um \textit{Doc} ou na propriedade \textit{ent\_type\_} de um \textit{Token}. Quando se pretende alterar anotações de entidades, tem de se o faze a nível do documento, de forma a assegurar que a sequência de anotações de \textit{tokens} permanece consistente.
 	
-	\item \texttt{\textit{Similarity}} -- Comparação de dois textos e cálculo de valor que indique quão similares são. A função de similitude compara palavras de um dado texto com base em vetores de palavras específicos para cada linguagem que podem ser customizados para um melhor desempenho em contextos de aplicação específicos.
+	\item \texttt{\textit{Similarity}} -- Comparação de dois textos e cálculo de um valor que indique quão similares são. A função de similitude compara palavras de um dado texto com base em vetores de palavras específicos para cada linguagem, que podem ser customizados para um melhor desempenho em contextos de aplicação específicos.
 	
-	\item \texttt{\textit{Text Classification}} -- atribuição de categorias ou etiquetas a todo o documento ou partes de um documento.
+	\item \texttt{\textit{Text Classification}} -- Atribuição de categorias ou etiquetas a todo o documento ou partes de um documento.
 	
-	\item \texttt{\textit{Rule-based matching}} -- Processo de busca de correspondências entre \textit{tokens} e determinados padrões. Estes padrões podem ser bastante complexos, tendo algumas parecenças com o funcionamento expressões regulares. No entanto, podem também tirar partido do conhecimento léxico desta ferramenta, filtrando, por exemplo, por bases morfológicas (i.e. \textit{Lemma}) ou classes gramaticais (i.e. verbos, substantivos, etc.). Possibilita ainda a formulação de padrões mais complexos através de quantificadores, \textit{wildcards}, expressões regulares. Podem ainda ser definidas, de um modo simples, funções que serão chamadas caso se dê uma ou mais correspondências.
+	\item \texttt{\textit{Rule-based matching}} -- Processo de busca de correspondências entre \textit{tokens} e determinados padrões. Estes padrões podem ser bastante complexos, tendo algumas parecenças com o funcionamento de expressões regulares. No entanto, pode-se também tirar partido do conhecimento léxico desta ferramenta, filtrando, por exemplo, por bases morfológicas (i.e. \textit{Lemma}) ou classes gramaticais (i.e. verbos, substantivos, etc.). É ainda possível a formulação de padrões mais complexos através de quantificadores, \textit{wildcards} e expressões regulares, bem como definir-se, de um modo simples, funções que serão chamadas caso se verifique uma ou mais correspondências.
 	
-	\item \texttt{\textit{Training}} -- atualização e melhoria de modelos estatísticos de previsões. Para treinar um modelo, são necessários dados de treino, i.e., exemplos de texto e etiquetas (POS \textit{tag}, \textit{named entity}, etc.) que se pretende que o modelo seja capaz de prever. O modelo pode ser melhorado através do processamento de novos textos limpos, em que o utilizador, que conhece a correção da resposta, dá \textit{feedback} ao modelo sobre a sua previsão na forma de um gradiente de erro da função de perda que calculam a diferença entre o exemplo de treino e o \textit{output} esperado (figura \ref{figure:training}). Quanto maior a diferença, mais significativo o gradiente e as atualizações ao modelo.
+	\item \texttt{\textit{Training}} -- Atualização e melhoria de modelos estatísticos de previsões. Para treinar um modelo, são necessários dados de treino, i.e., exemplos de texto e etiquetas (POS \textit{tag}, \textit{named entity}, etc.) que se pretende que o modelo seja capaz de prever. O modelo pode ser melhorado através do processamento de novos textos limpos, em que o utilizador, que conhece a correção da resposta, dá \textit{feedback} ao modelo sobre a sua previsão na forma de um gradiente de erro da função de perda que calculam a diferença entre o exemplo de treino e o \textit{output} esperado (figura \ref{figure:training}). Quanto maior a diferença, mais significativo o gradiente e as atualizações ao modelo.
 
 	\item \texttt{\textit{Serialization}} -- Funcionalidade responsável por guardar objetos do \textit{spaCy} para ficheiros em disco, bem como por carregar objetos previamente guardados. Este processo torna-se especialmente importante quando usado para guardar objetos do tipo \textit{Doc}, por exemplo, que possuem todas as informações retiradas do texto original, bem como outras características inseridas manualmente como entidades ou vetores de palavras customizados. Para isso, é utilizado  a biblioteca \textit{Pickle}, \textit{built-in} da linguagem \textit{Python}.
 \end{itemize}
@@ -228,6 +223,8 @@ Existem diversas ferramentas do género do spaCy que podem ser utilizadas para e
 
 Em primeiro lugar, pode-se efetuar uma breve comparação entre as funcionalidades oferecidas pelo spaCy e outras ferramentas semelhantes, como SyntaxNet, NLTK e CoreNLP.
 
+Como se pode perceber através da análise da tabela \ref{table:campare_features}, o spaCy disponibiliza todas as principais funcionalidades associadas o processamento de linguagem natural, exceto a \textit{Conference Resolution}, que corresponde à tarefa de encontrar todas as expressões que se referem à mesma entidade num texto. Apenas o CoreNLP possui essa capacidade, sendo que, em contrapartida, não possui \textit{Integrated word vectors}, que possibilitam a previsão de quão similares são dois objetos. Assim, percebe-se que o spaCy será a melhor alternativa em muitos dos casos.
+
 \begin{table}[!ht]
 	\centering
 	\renewcommand{\arraystretch}{1.3}
@@ -259,9 +256,8 @@ Em primeiro lugar, pode-se efetuar uma breve comparação entre as funcionalidad
 	\label{table:campare_features}
 \end{table}
 
-Como se pode perceber através da análise da tabela \ref{table:campare_features}, o spaCy disponibiliza todas as principais funcionalidades associadas o processamento de linguagem natural, exceto a \textit{Conference Resolution}, que corresponde à tarefa de encontrar todas as expressões que se referem à mesma entidade num texto. Apenas o CoreNLP possui essa capacidade, sendo que, em contrapartida, não possui \textit{Integrated word vectors}, que possibilitam a previsão de quão similares são dois objetos. Assim, percebe-se que o spaCy será a melhor alternativa em muitos dos casos.
 
-Outro fator fundamental na comparação entre o spaCy e outras ferramentas semelhantes, é o desempenho, i.e., o tempo que o spaCy demora a gerar respostas. Dois artigos revistos em 2015 ({{REF}}) confirmam que o spaCy oferece o \textit{parser} sintático mais rápido do mundo e que a sua precisão está dentro de 1\% do melhor disponível. Os poucos sistemas mais precisos são pelo menos 20 vezes mais lentos. Alguns valores de precisão e velocidade são apresentados na tabela \ref{table:campare_benchmarks}. Informações mais detalhadas relativamente à velocidade são apresentadas na tabela \ref{table:campare_speed}.
+Outro fator fundamental na comparação entre o spaCy e outras ferramentas semelhantes, é o desempenho, i.e., o tempo que o spaCy demora a gerar respostas. Dois artigos revistos em 2015 (\cite{article_1}\cite{article_2}) confirmam que o spaCy oferece o \textit{parser} sintático mais rápido do mundo e que a sua precisão está dentro de 1\% do melhor disponível. Os poucos sistemas mais precisos são pelo menos 20 vezes mais lentos. Alguns valores de precisão e velocidade são apresentados na tabela \ref{table:campare_benchmarks}. Informações mais detalhadas relativamente à velocidade são apresentadas na tabela \ref{table:campare_speed}.
 
 \begin{table}[!ht]
 	\centering
@@ -488,7 +484,7 @@ Em primeiro lugar, é criada uma variável \textit{TRAIN\_DATA} que possui duas 
 
 Adicionalmente, tira-se ainda partido da capacidade de serialização do \textit{spaCy} (abordada anteriormente neste relatório) para guardar o modelo da linguagem que se encontra modificada após o processo de treino.
 
-O código deste exemplo está presente no Anexo \ref{anexo:treino}, encontrando-se também disponível no repositório do \textit{GitHub} {{REF}}.
+O código deste exemplo está presente no Anexo \ref{anexo:treino}, encontrando-se também disponível no repositório do \textit{GitHub} \cite{spacy_example_explosion}.
 
 
 
@@ -500,7 +496,7 @@ Um modelo consiste em dados binários e é produzido ao apresentar ao sistema ex
 
 Para além de palavras com a mesma classe tenderem a seguir uma estrutura sintática semelhante, também são úteis em processamento baseado em regras. Assim, consegue-se perceber a importância de determinar corretamente a classe (\textit{part-of-speech}) de cada palavra num determinado texto de \textit{input}.
 
-O spaCy utiliza as POS \textit{tags} do projeto \textit{Penn Treebank} {{REF}}.
+O spaCy utiliza as POS \textit{tags} do projeto \textit{Penn Treebank} \cite{spacy_pos}.
 
 % https://towardsdatascience.com/a-short-introduction-to-nlp-in-python-with-spacy-d0aa819af3ad
 
@@ -541,10 +537,10 @@ Para construir um exemplo demonstrativo de algumas das funcionalidades do spaCy 
 
 O código associado a esta parte da aplicação, à interação com o utilizador, é apresentado no anexo \ref{anexo:working_example_2}. A utilização da mesma é indicada pela própria aplicação quando se solicita ajuda (\texttt{-h}) ou se insere um comando inválido:
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% python3 vai ser para remover
+\newpage
 
 \begin{verbatim}
-    USAGE:  python3 app.py [(-i <outputfile> | -p <outputfile>
+    USAGE:  spacys_features [(-i <outputfile> | -p <outputfile>
     | -t <outputfile> | -g <outputfile>) [-l <language>] 
     <inputfile>]
 
@@ -561,7 +557,7 @@ O código associado a esta parte da aplicação, à interação com o utilizador
 	output presented.
 \end{verbatim}
 
-Nos anexos {{REF}} a {{REF}} apresentam-se os resultados obtidos na aplicação \textit{web}
+No anexo \ref{anexo:working_example_web} apresentam-se os resultados obtidos na aplicação \textit{web}.
 
 Para se implementar as funcionalidades disponibilizadas pelo spaCy, utilizou-se as funções anteriormente referidas, que se encontram no anexo \ref{anexo:working_example_1}. No ambiente \textit{web}, o reconhecimento de entidades permite fazer uma filtragem de quais serão etiquetadas. Nesse contexto, todos os \textit{outputs} obtidos são do tipo \textit{html}, sendo depois integrados nos \textit{templates} existentes.
 
@@ -614,7 +610,7 @@ A função \textit{generate\_information} permite obter várias informações so
 
 \subsection{Resultados}
 
-Os resultados obtidos através da execução via linha de comandos são iguais aos previamente recolhidos para a execução das funções individualmente. No contexto \textit{wed}, apresentam-se nas imagens do anexo {{REF}} exemplos de funcionamento de cada uma das funcionalidades.
+Os resultados obtidos através da execução via linha de comandos são iguais aos previamente recolhidos para a execução das funções individualmente. No contexto \textit{wed}, apresentam-se nas imagens do anexo \ref{anexo:working_example_web}, conforme referido anteriormente, exemplos de funcionamento de cada uma das funcionalidades.
 
 
 % Anexos
@@ -627,285 +623,6 @@ Os resultados obtidos através da execução via linha de comandos são iguais a
 
 \appendixpage
 \renewcommand{\thesubsection}{\Alph{subsection}}
-
-\subsection{\textit{Working Example}: código associado à utilização de spaCy}
-\label{anexo:working_example_1}
-\begin{minted}[linenos,frame=lines,breaklines]{python}
-import os
-import re
-import pandas as pd
-import spacy
-from spacy import displacy
-from spacy.util import update_exc
-from pathlib import Path
-from prettytable import PrettyTable
-import matplotlib as mpl
-mpl.use('Agg')
-from matplotlib import pyplot as plt
-
-# Gerar tabelas (auxiliares)
-def generate_html_table(headers, data):
-    res = '<table class="table table-striped">\n'
-    res += '  <thead><tr><th>' + '    </th><th>'.join(headers) + '  </th></tr></thead>\n  <tbody>\n'
-    for sublist in data:
-        res += '  <tr><td>'
-        res += '    </td><td>'.join(sublist)
-        res += '  </td></tr>\n'
-    res += '  </tbody>\n</table>\n'
-    return res
-
-def generate_table(headers, data):
-    table = PrettyTable()
-    table.field_names = headers
-    for row in data:
-        table.add_row(row)
-    return table
-
-
-# Part-of-speech tagging
-def generate_pos_chart(doc, filename='pos_frequence.svg', type='html'):
-    tag_dict = {w.pos : w.pos_ for w in doc}
-    pos_freq = []
-    pos_tags = []
-    for pos_id, freq in doc.count_by(spacy.attrs.POS).items():
-        pos_freq.append(freq / len(doc))
-        pos_tags.append(tag_dict[pos_id])
-    if type=='html':
-        return [['POS Tag', 'POS Frequence (%)']] + [list(x) for x in zip(pos_tags,pos_freq)]
-    else:
-        plt.barh(range(1,len(pos_tags)+1), pos_freq, tick_label=pos_tags)
-        plt.savefig(filename)
-
-
-# Get token's information
-def generate_information(doc, vocab, type='html'):
-    # python3 -m spacy download pt
-    headers = ["Text","Lemma", "POS", "TAG", "DEP", "SHAPE", "MORPHOLOGIAL INFO", "IS_ALPHA", "IS_STOP"]
-    data = []
-    tokens = []
-
-    for token in doc:
-
-        if (str(token.pos_) != 'SPACE' and str(token.pos_) != 'PUNCT') or token.text not in tokens:
-
-            if token.tag_:
-                morph_info = dict(filter(lambda x : x[0]!=74, vocab.morphology.tag_map[token.tag_].items()))
-                if not morph_info:
-                    morph_info = ''
-
-            else:
-                morph_info = ''
-            data.append([str(s) for s in (token.text, token.lemma_, token.pos_, token.tag_, token.dep_, token.shape_, morph_info, token.is_alpha, token.is_stop)])
-            tokens.append(token.text)
-
-    if type=='html':
-        return generate_html_table(headers, data)
-    else:
-        return generate_table(headers, data)
-
-
-
-# Dependencies Graph
-def generate_dependencies_graph(doc, type='service', compact = False, background='white', color='black', font='Source Sans Pro'):
-    res = []
-    if type in ('service', 'html', 'pict'):
-        docs = list(doc.sents)
-        options = {'compact': compact, 'bg': background, 'color': color, 'font': font}
-    if type == 'service':
-        displacy.serve(docs, style='dep', options=options)
-    elif type == 'html':
-        html = displacy.render(docs, style='dep', page=True, options=options)
-        html = re.sub(r'.*<body[^>]*>(.*)</body>.*', r'\1', html, flags=re.DOTALL)
-        res.append(html)
-    elif type == 'pict':
-        for doc in docs:
-            pict = displacy.render(doc, style='dep', options=options)
-            res.append(pict)
-    return res
-
-
-
-# Visualizing the entity recognizer
-def generate_tagged_text(doc, type = 'server', entities = None, colors = None):
-    res = ''
-    if type in ('server', 'html'):
-        options = {}
-        if entities:
-            options['ents'] = entities
-        if colors:
-            options['colors'] = colors
-        if type=='server':
-            displacy.serve(doc, style='ent', options=options)
-        else:
-            res = displacy.render(doc, style='ent', options=options)
-    else:
-        res_list = []
-        for word in doc:
-            if word.ent_type_ and not str(word).isspace():
-                res_list.append(str(word) + '{' + word.ent_type_ + '}')
-            else:
-                res_list.append(str(word))
-        res = ' '.join(res_list)
-    return res
-
-# Rule-based morphology
-def add_tokenizer_exceptions(nlp, tokens, tokenizer=None):
-    if not tokenizer:
-        tokenizer = nlp.tokenizer
-    for token, token_attrs in tokens.items():
-        tokenizer.add_special_case(token, token_attrs)
-\end{minted}
-
-\newpage
-
-\subsection{\textit{Working Example}: código associado à interação com o utilizador}
-\label{anexo:working_example_2}
-\begin{minted}[linenos,frame=lines,breaklines]{python}
-import sys
-import getopt
-import json
-import spacy
-from pos_tagging import *
-from flask import Flask, request, url_for, redirect, render_template
-
-# Processar argumentos do comando
-def processArgs():
-    info_out = ''
-    pos_chart_out = ''
-    tagged_text_out = ''
-    graphs_out = ''
-    lang = 'pt'
-    inputfile = ''
-
-    error = 'USAGE:\tpython3 app.py [(-i <outputfile> | -p <outputfile> | -t <outputfile> | -g <outputfile>) [-l <language>] <inputfile>]\n\n' + \
-            'OPTIONS:\n' + \
-            '\t-l\tlanguage - \'pt\' (default) or \'en\'\n' + \
-            '\t-i\treturns table with information about tokens to outputfile (or \'shell\')\n' + \
-            '\t-p\tgenerates bar chart with POS tag frequence to outputfile\n' + \
-            '\t-t\treturns tagged text to outputfile (or \'shell\')\n' + \
-            '\t-g\tgenerates dependencies graphs to outputfile.svg\n' +\
-            '* if no options are provided, a web server will be initialized, where the input will be inserted and the output presented.'
-
-    # Processar opções/argumentos do comando utilizado
-    try: 
-        opts, args = getopt.getopt(sys.argv[1:],"i:p:t:g:l:hv", ["info=", "pos-chart=", "tagged-text=", "graphs=", "lang=", "help", "version"])
-    except getopt.GetoptError:
-        print(error)
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt in ('-h', '--help'):
-            print(error)
-            sys.exit()
-        elif opt in ('-v', '--version'):
-            print('Version 1.0')
-            sys.exit()
-        elif opt in ("-i", "--info"):
-            info_out = arg
-        elif opt in ("-p", "--pos-chart"):
-            pos_chart_out = arg
-        elif opt in ("-t", "--tagged-text"):
-            tagged_text_out = arg
-        elif opt in ("-g", "--graphs"):
-            graphs_out = arg
-        elif opt in ("-l", "--lang"):
-            lang = arg
-    if info_out or pos_chart_out or tagged_text_out or graphs_out:
-        if len(args) == 1:
-            inputfile = args[0]
-        else:
-            print(error)
-            sys.exit(2)
-    elif len(args)>0:
-        print(error)
-        sys.exit(2)
-
-    return info_out, pos_chart_out, tagged_text_out, graphs_out, lang, inputfile
-
-app = Flask(__name__)
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    global lang, nlp, tagged_text, info, graphs, bar_chart
-    if request.method == 'POST':
-        lang = request.values.get('lang')
-        entities = request.form.getlist('entity')
-        token_exceptions = json.loads(request.values.get('tokenExceptions'))
-        add_tokenizer_exceptions(nlp[lang], token_exceptions)
-        doc = nlp[lang](request.values.get('input'))
-        tagged_text = generate_tagged_text(doc, type = 'html', entities = entities)
-        info = generate_information(doc, nlp[lang].vocab)
-        bar_chart = generate_pos_chart(doc, None, type='html')
-        graphs = '\n'.join(generate_dependencies_graph(doc, type = 'html'))
-        return redirect(url_for('tagged_text_form'))
-    return render_template('index.html', lang=lang)
-
-
-@app.route('/tagged_text_form', methods=['GET', 'POST'])
-def tagged_text_form():
-    global tagged_text
-    if request.method == 'POST':
-        return redirect(url_for('index'))
-    return render_template('tagged_text_form.html', tagged_text=tagged_text)
-
-
-@app.route('/info_form', methods=['GET', 'POST'])
-def info_form():
-    global info, bar_chart
-    if request.method == 'POST':
-        return redirect(url_for('index'))
-    return render_template('info_form.html', table=info, bar_chart=bar_chart)
-
-@app.route('/graphs_form', methods=['GET', 'POST'])
-def graphs_form():
-    global graphs
-    if request.method == 'POST':
-        return redirect(url_for('index'))
-    return render_template('graphs_form.html', graphs=graphs)
-
-
-if __name__ == '__main__':
-    global tagged_text, info, graphs
-    info_out, pos_chart_out, tagged_text_out, graphs_out, lang, inputfile = processArgs()
-    if inputfile:
-        if lang == 'en':
-            nlp = spacy.load('en_core_web_lg')
-        else:
-            nlp = spacy.load('pt')
-        with open(inputfile, 'r') as input:
-            doc = nlp(input.read())
-        if info_out:
-            output = generate_information(doc, nlp.vocab, 'text')
-            if info_out == 'shell':
-                print(output)
-            else:
-                with open(info_out, 'w') as fd:
-                    fd.write(output)
-        if pos_chart_out:
-            generate_pos_chart(doc, pos_chart_out, type='pict')
-        if tagged_text_out:
-            output = generate_tagged_text(doc, 'text', nlp.vocab)
-            if tagged_text_out == 'shell':
-                print(output)
-            else:
-                with open(tagged_text_out, 'w') as fd:
-                    fd.write(output)
-        if graphs_out:
-            os.makedirs('./images', exist_ok=True)
-            pictures = generate_dependencies_graph(doc, 'pict')
-            for i, pict in enumerate(pictures):
-                file_name = graphs_out + '_' + str(i) + '.svg'
-                output_path = Path('./images/' + file_name)
-                with output_path.open('w', encoding='utf-8') as output_file:
-                    output_file.write(pict)
-    else:
-        nlp = {'en': spacy.load('en_core_web_lg'), 'pt': spacy.load('pt') }
-        tagged_text = ''
-        info = ''
-        graphs = ''
-        app.run()
-\end{minted}
-
-\newpage
 
 \subsection{Exemplo de aplicação: Treino do \textit{dependency parser} (e serialização)}
 \label{anexo:treino}
@@ -940,6 +657,8 @@ TRAIN_DATA = [
     model=("Model name. Defaults to blank 'en' model.", "option", "m", str),
     output_dir=("Optional output directory", "option", "o", Path),
     n_iter=("Number of training iterations", "option", "n", int))
+
+
 
 def main(model=None, output_dir=None, n_iter=10):
     """Load the model, set up the pipeline and train the parser."""
@@ -1012,6 +731,353 @@ if __name__ == '__main__':
 
 \newpage
 
+\subsection{\textit{Working Example}: código associado à utilização de spaCy}
+\label{anexo:working_example_1}
+\begin{minted}[linenos,frame=lines,breaklines]{python}
+# coding=utf-8
+#!/usr/bin/python3
+
+''' Implementation of spaCy's functionality
+
+Collection of functions that implement some of spaCy's functionality: part-of-speech (POS) tagging, entity recognition, information about tokens, dependency visualization and token exceptions.
+
+These functions support both the web app as well as the terminal client.
+'''
+
+import re
+import spacy
+from spacy import displacy
+from prettytable import PrettyTable
+import matplotlib as mpl
+mpl.use('Agg')
+from matplotlib import pyplot as plt
+
+
+def generate_html_table(headers, data):
+    '''
+    Generates html table with token's info
+    '''
+    res = '<table class="table table-striped">\n'
+    res += '  <thead><tr><th>' + '    </th><th>'.join(headers) + '  </th></tr></thead>\n  <tbody>\n'
+    for sublist in data:
+        res += '  <tr><td>'
+        res += '    </td><td>'.join(sublist)
+        res += '  </td></tr>\n'
+    res += '  </tbody>\n</table>\n'
+    return res
+
+
+def generate_table(headers, data):
+    '''
+    Generates prettytable with token's info
+    '''
+    table = PrettyTable()
+    table.field_names = headers
+    for row in data:
+        table.add_row(row)
+    return table
+
+
+def generate_pos_chart(doc, filename='pos_frequence.svg', style='html'):
+    '''
+    Generates PoS chart
+    '''
+    tag_dict = {w.pos : w.pos_ for w in doc}
+    pos_freq = []
+    pos_tags = []
+    for pos_id, freq in doc.count_by(spacy.attrs.POS).items():
+        pos_freq.append(freq / len(doc))
+        pos_tags.append(tag_dict[pos_id])
+    res = None
+    if style == 'html':
+        res = [['POS Tag', 'POS Frequence (%)']] + [list(x) for x in zip(pos_tags, pos_freq)]
+    else:
+        plt.barh(range(1, len(pos_tags)+1), pos_freq, tick_label=pos_tags)
+        plt.savefig(filename)
+    return res
+
+def generate_information(doc, vocab, style='html'):
+    '''
+    Generates table with token's info
+    '''
+    headers = ["Text", "Lemma", "POS", "TAG", "DEP", "SHAPE", "MORPHOLOGIAL INFO", "IS_ALPHA", "IS_STOP"]
+    data = []
+    tokens = []
+
+    for token in doc:
+        if (str(token.pos_) != 'SPACE' and str(token.pos_) != 'PUNCT') or token.text not in tokens:
+            if token.tag_:
+                morph_info = dict(filter(lambda x: x[0] != 74,vocab.morphology.tag_map[token.tag_].items()))
+                if not morph_info:
+                    morph_info = ''
+            else:
+                morph_info = ''
+            data.append([str(s) for s in (token.text, token.lemma_, token.pos_, token.tag_, token.dep_, token.shape_, morph_info, token.is_alpha, token.is_stop)])
+            tokens.append(token.text)
+    res = None
+    if style == 'html':
+        res = generate_html_table(headers, data)
+    else:
+        res = generate_table(headers, data)
+    return res
+
+
+def generate_dependencies_graph(doc, style='service', characteristics=(False, 'white', 'black', 'Source Sans Pro')):
+    '''
+    Generates dependency graph to HTML, web server or picture
+    '''
+    res = []
+    compact = characteristics[0]
+    background = characteristics[1]
+    color = characteristics[2]
+    font = characteristics[3]
+
+    if style in ('service', 'html', 'pict'):
+        docs = list(doc.sents)
+        options = {'compact': compact, 'bg': background, 'color': color, 'font': font}
+    
+    if style == 'service':
+        displacy.serve(docs, style='dep', options=options)
+    elif style == 'html':
+        html = displacy.render(docs, style='dep', page=True, options=options)
+        html = re.sub(r'.*<body[^>]*>(.*)</body>.*', r'\1', html, flags=re.DOTALL)
+        res.append(html)
+    elif style == 'pict':
+        for document in docs:
+            pict = displacy.render(document, style='dep', options=options)
+            res.append(pict)
+    return res
+
+def generate_tagged_text(doc, style='server', entities=None, colors=None):
+    '''
+    Generates either text with entities or graphical entity visualizer to html or web server
+    '''
+    res = ''
+    if style in ('server', 'html'):
+        options = {}
+        if entities:
+            options['ents'] = entities
+        if colors:
+            options['colors'] = colors
+        if style == 'server':
+            displacy.serve(doc, style='ent', options=options)
+        else:
+            res = displacy.render(doc, style='ent', options=options)
+    else:
+        res_list = []
+        for word in doc:
+            if word.ent_type_:
+                res_list.append(str(word) + '{' + word.ent_type_ + '}')
+            else:
+                res_list.append(str(word))
+        res = ' '.join(res_list)
+    return res
+
+
+def add_tokenizer_exceptions(nlp, tokens, tokenizer=None):
+    '''
+    Adds token exceptions
+    '''
+    if not tokenizer:
+        tokenizer = nlp.tokenizer
+    for token, token_attrs in tokens.items():
+        tokenizer.add_special_case(token, token_attrs)
+
+
+__author__ = "João Barreira, Mafalda Nunes"
+__email__ = "a73831@alunos.uminho.pt, a77364@alunos.uminho.pt"
+\end{minted}
+
+\newpage
+
+\subsection{\textit{Working Example}: código associado à interação com o utilizador}
+\label{anexo:working_example_2}
+\begin{minted}[linenos,frame=lines,breaklines]{python}
+# coding=utf-8
+#!/usr/bin/python3
+
+''' Web app and terminal client to use spaCy's features
+
+Either launches the web app (if no parameters are provided) or takes an input file and produces output to file or the terminal. This output can be: a table with information about tokens, a bar chart with POS tag frequence, a text tagged with entities or a dependency graph.
+
+Multi-language support via the -l/--lang parameter.
+'''
+
+import os
+import sys
+import getopt
+from pathlib import Path
+import json
+import spacy
+from flask import Flask, request, url_for, redirect, render_template
+from .pos_tagging import add_tokenizer_exceptions, generate_tagged_text, generate_information, generate_pos_chart, generate_dependencies_graph
+
+
+APP = Flask(__name__)
+
+
+@APP.route('/', methods=['GET', 'POST'])
+def index():
+    '''
+    On 'GET' displays index template.
+    On 'POST' colect all necessary input and redirect to the next form.
+    '''
+    if request.method == 'POST':
+        APP.config['LANG'] = request.values.get('lang')
+        entities = request.form.getlist('entity')
+        token_exceptions = json.loads(request.values.get('tokenExceptions'))
+        add_tokenizer_exceptions(APP.config['NLP'][APP.config['LANG']], token_exceptions)
+        doc = APP.config['NLP'][APP.config['LANG']](request.values.get('input'))
+        APP.config['TAGGED_TEXT'] = generate_tagged_text(doc, style='html', entities=entities)
+        APP.config['INFO'] = generate_information(doc, APP.config['NLP'][APP.config['LANG']].vocab)
+        APP.config['BAR_CHART'] = generate_pos_chart(doc, None, style='html')
+        APP.config['GRAPHS'] = '\n'.join(generate_dependencies_graph(doc, style='html'))
+        return redirect(url_for('tagged_text_form'))
+    return render_template('index.html', lang=APP.config['LANG'])
+
+
+@APP.route('/tagged_text_form', methods=['GET', 'POST'])
+def tagged_text_form():
+    '''
+    On 'GET' displays tagged_text_form template.
+    On 'POST' redirect to index form.
+    '''
+    if request.method == 'POST':
+        return redirect(url_for('index'))
+    return render_template('tagged_text_form.html', tagged_text=APP.config['TAGGED_TEXT'])
+
+
+@APP.route('/info_form', methods=['GET', 'POST'])
+def info_form():
+    '''
+    On 'GET' displays info_form template.
+    On 'POST' redirect to index form.
+    '''
+    if request.method == 'POST':
+        return redirect(url_for('index'))
+    return render_template('info_form.html', table=APP.config['INFO'],
+                           bar_chart=APP.config['BAR_CHART'])
+
+
+@APP.route('/graphs_form', methods=['GET', 'POST'])
+def graphs_form():
+    '''
+    On 'GET' displays graphs_form template.
+    On 'POST' redirect to index form.
+    '''
+    if request.method == 'POST':
+        return redirect(url_for('index'))
+    return render_template('graphs_form.html', graphs=APP.config['GRAPHS'])
+
+
+def spacys_features(arguments):
+    '''
+    Provides spacy's features on command line and web interface.
+    '''
+
+    info_out, pos_chart_out, tagged_text_out, graphs_out, lang, inputfile = arguments
+
+    if inputfile:
+        nlp = {'en': 'en_core_web_lg', 'pt': 'pt'}
+        nlp = spacy.load(nlp[lang])
+        with open(inputfile, 'r') as inp:
+            doc = nlp(inp.read())
+        if info_out:
+            output = generate_information(doc, nlp.vocab, 'text')
+            if info_out == 'shell':
+                print(output)
+            else:
+                with open(info_out, 'w') as file_descriptor:
+                    file_descriptor.write(output)
+        if pos_chart_out:
+            generate_pos_chart(doc, pos_chart_out, style='pict')
+        if tagged_text_out:
+            output = generate_tagged_text(doc, 'text', nlp.vocab)
+            if tagged_text_out == 'shell':
+                print(output)
+            else:
+                with open(tagged_text_out, 'w') as file_descriptor:
+                    file_descriptor.write(output)
+        if graphs_out:
+            os.makedirs('./images', exist_ok=True)
+            output = generate_dependencies_graph(doc, 'pict')
+            for i, pict in enumerate(output):
+                output_path = Path('./images/' + graphs_out + '_' + str(i) + '.svg')
+                with output_path.open('w', encoding='utf-8') as file_descriptor:
+                    file_descriptor.write(pict)
+    else:
+        APP.config['NLP'] = {'en': spacy.load('en_core_web_lg'), 'pt': spacy.load('pt')}
+        APP.config['LANG'] = 'pt'
+        APP.config['TAGGED_TEXT'] = ''
+        APP.config['INFO'] = ''
+        APP.config['GRAPHS'] = ''
+        APP.config['BAR_CHART'] = None
+        APP.run()
+
+
+
+# Processar argumentos do comando
+def process_args():
+    '''
+    Proccess arguments from command line.
+    '''
+
+    info_out = ''
+    pos_chart_out = ''
+    tagged_text_out = ''
+    graphs_out = ''
+    lang = 'pt'
+    inputfile = ''
+
+    error = 'USAGE:\tspacys_features [(-i <outputfile> | -p <outputfile> | -t <outputfile> | ' + \
+            '-g <outputfile>) [-l <language>] <inputfile>]\n\n' + \
+            'OPTIONS:\n' + \
+            '\t-l\tlanguage - \'pt\' (default) or \'en\'\n' + \
+            '\t-i\treturns table with information about tokens to outputfile (or \'shell\')\n' + \
+            '\t-p\tgenerates bar chart with POS tag frequence to outputfile\n' + \
+            '\t-t\treturns tagged text to outputfile (or \'shell\')\n' + \
+            '\t-g\tgenerates dependencies graphs to outputfile.svg\n' +\
+            '* if no options are provided, a web server will be initialized, where the input ' + \
+            'will be inserted and the output presented.'
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "i:p:t:g:l:hv", ["info=", "pos-chart=", "tagged-text=", "graphs=", "lang=", "help", "version"])
+    except getopt.GetoptError:
+        print(error)
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ('-h', '--help'):
+            print(error)
+            sys.exit()
+        elif opt in ('-v', '--version'):
+            print('Version 1.0')
+            sys.exit()
+        elif opt in ("-i", "--info"):
+            info_out = arg
+        elif opt in ("-p", "--pos-chart"):
+            pos_chart_out = arg
+        elif opt in ("-t", "--tagged-text"):
+            tagged_text_out = arg
+        elif opt in ("-g", "--graphs"):
+            graphs_out = arg
+        elif opt in ("-l", "--lang"):
+            lang = arg
+
+    if (info_out or pos_chart_out or tagged_text_out or graphs_out) and len(args) == 1:
+        inputfile = args[0]
+    elif info_out or pos_chart_out or tagged_text_out or graphs_out or args:
+        print(error)
+        sys.exit(2)
+
+    spacys_features((info_out, pos_chart_out, tagged_text_out, graphs_out, lang, inputfile))
+
+
+__author__ = "João Barreira, Mafalda Nunes"
+__email__ = "a73831@alunos.uminho.pt, a77364@alunos.uminho.pt"
+\end{minted}
+
+\newpage
+
 \subsection{\textit{Working Example}: interface \textit{web}}
 \label{anexo:working_example_web}
 
@@ -1062,81 +1128,81 @@ if __name__ == '__main__':
 
 \begin{thebibliography}{99}
     
-	\bibitem{linkname}
+	\bibitem{spacy_concept}
 	spaCy,
 	``spaCy 101: Everything you need to know'',
 	\textit{spaCy},
     \url{https://spacy.io/usage/spacy-101}.
     
-    \bibitem{linkname}
+    \bibitem{spacy_api}
 	spaCy,
 	``Architecture'',
 	\textit{spaCy},
     \url{https://spacy.io/api/}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_features}
 	spaCy,
 	``Linguistic Features'',
 	\textit{spaCy},
     \url{https://spacy.io/usage/linguistic-features}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_training}
 	spaCy,
 	``Training spaCy’s Statistical Models'',
 	\textit{spaCy},
     \url{https://spacy.io/usage/training}.
 
-    \bibitem{linkname}
+    \bibitem{article_1}
 	Choi, J., Tetreault, J., Stent, A.,
 	``It Depends: Dependency Parser Comparison
     Using A Web-based Evaluation Tool'',
 	\textit{aclweb},
     \url{https://aclweb.org/anthology/P/P15/P15-1038.pdf}.
 
-    \bibitem{linkname}
+    \bibitem{article_2}
 	Honnibal, M., Johnson, M.,
 	``An Improved Non-monotonic Transition System for Dependency Parsing'',
 	\textit{aclweb},
     \url{https://www.aclweb.org/anthology/D/D15/D15-1162.pdf}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_facts}
 	spaCy,
 	``Facts \& Figures'',
 	\textit{spaCy},
     \url{https://spacy.io/usage/facts-figures}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_cli}
 	spaCy,
 	``Command Line Interface'',
 	\textit{spaCy},
     \url{https://spacy.io/api/cli}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_usage}
 	spaCy,
 	``Install spaCy'',
 	\textit{spaCy},
     \url{https://spacy.io/usage/}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_examples}
 	spaCy,
 	``Code Examples'',
 	\textit{spaCy},
     \url{https://spacy.io/usage/examples}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_example_explosion}
 	Explosion AI (spaCy),
 	``"A simple example of extracting relations between phrases and entities using
     spaCy's named entity recognizer and the dependency parse'',
 	\textit{GitHub},
     \url{https://github.com/explosion/spacy/blob/master/examples/information_extraction/entity_relations.py}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_introduction}
 	Conor McDonald,
 	``A short introduction to NLP in Python with spaCy'',
 	\textit{towardsdatascience},
     \url{https://towardsdatascience.com/a-short-introduction-to-nlp-in-python-with-spacy-d0aa819af3ad}.
 
-    \bibitem{linkname}
+    \bibitem{spacy_pos}
 	University of Pennsylvania - Department of Linguistics,
 	``Alphabetical list of part-of-speech tags used in the Penn Treebank Project'',
 	\textit{ling.upenn.edu},
