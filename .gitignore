@@ -23,6 +23,7 @@ venv/
 !outputs/*
 !en.txt
 !pt.txt
+!configs.txt
 
 .DS_Store
 

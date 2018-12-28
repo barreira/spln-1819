@@ -1,0 +1,5 @@
+FoldersPath:            ['listened_folders/latex']
+NamesRegex:             ['^.*\.tex$','^.*\.ltx$','^.*\.latex$']
+Recursive:              True
+IN_CREATE|IN_MODIFY:    [('OS_C', 'pdflatex $NAME_EXT; pdflatex $NAME_EXT')]
+IN_DELETE:              [('OS_C', 'rm $NAME.*')]
