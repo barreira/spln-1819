@@ -1,5 +1,11 @@
 FoldersPath:            ['listened_folders/latex']
 NamesRegex:             ['^.*\.tex$','^.*\.ltx$','^.*\.latex$']
 Recursive:              True
-IN_CREATE|IN_MODIFY:    [('OS_C', 'pdflatex $NAME_EXT; pdflatex $NAME_EXT')]
-IN_DELETE:              [('OS_C', 'rm $NAME.*')]
+IN_CREATE|IN_MODIFY:    [('SHELL_COMMAND', 'pdflatex $NAME_EXT; pdflatex $NAME_EXT')]
+IN_DELETE:              [('SHELL_COMMAND', 'rm $NAME.*')]
+
+FoldersPath:            ['listened_folders/c']
+NamesRegex:             ['^.*\.c$','^.*\.h$']
+Recursive:              True
+IN_CREATE:				[('SHELL_COMMAND', 'cp "$CURRENT_DIR/scripts/c_code_organizer.sh" .; ./c_code_organizer.sh; rm c_code_organizer.sh')]
+IN_MODIFY:              [('SHELL_COMMAND', 'if [ "$NAME_EXT" = "main.c" ]; then make; else cd ..; make; fi')]

@@ -56,10 +56,15 @@ def exec_actions(actions, watch_path, var_name_ext):
     current_dir = os.getcwd()
     os.chdir(watch_path)
     for action_type, action in actions:
-        if action_type == 'OS_C':
-            os.system(action.replace('$NAME_EXT', var_name_ext).replace('$NAME', var_name))
-        elif action_type == 'P_S':
-            os.system('python3 ' + action.replace('$NAME_EXT', var_name_ext).replace('$NAME', var_name))
+        action_name = action.replace('$NAME_EXT', var_name_ext)\
+                            .replace('$NAME', var_name)\
+                            .replace('$CURRENT_DIR', current_dir)\
+                            .replace('$WATCH_DIR_LAST', watch_path.split('/')[-1])\
+                            .replace('$WATCH_DIR', watch_path)
+        if action_type == 'SHELL_COMMAND':
+            os.system(action_name)
+        #elif action_type == 'PYTHON_SCRYPT':
+        #    os.system('python3 ' + action.replace('$NAME_EXT', var_name_ext).replace('$NAME', var_name))
     os.chdir(current_dir)
 
 
@@ -100,7 +105,8 @@ def listen_folders(config):
     
     try:
         for event in i.event_gen(yield_nones=False):
-            (header, type_names, watch_path, filename) = event
+            (_, type_names, watch_path, filename) = event
+            # print(type_names, watch_path, filename)
             # Se se detetar a criação de uma nova diretoria dentro de uma vigiada e a vigiada for recursiva
             if 'IN_CREATE' in type_names and os.path.isdir(watch_path + '/' + filename) and config[watch_path][0]:
                 dir_path = watch_path + '/' + filename
@@ -108,6 +114,9 @@ def listen_folders(config):
                     i.add_watch(dir_path)
                 entry = {dir_path: config[watch_path]}
                 config = concat_config(config, entry)
+            # if 'IN_DELETE' in type_names and os.path.isdir(watch_path + '/' + filename):
+            #     dir_path = watch_path + '/' + filename
+            #     i.remove_watch(dir_path)
             # Obter todos os nomes de ficheiros sobre os quais atuar
             filename_matches = []
             for name_regex in config[watch_path].keys():
@@ -120,7 +129,6 @@ def listen_folders(config):
                     exec_actions(config[watch_path][name_regex][type_name], watch_path, filename)
 
     except KeyboardInterrupt:
-        # pprint.pprint(config)
         for watch_path in config:
             i.remove_watch(watch_path)
         print('FINISHED')
