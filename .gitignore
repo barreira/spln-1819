@@ -24,6 +24,8 @@ venv/
 !en.txt
 !pt.txt
 !configs.txt
+!wordlist-ao-latest.txt
+!pt_PT-freq.txt
 
 .DS_Store
 
