@@ -33,40 +33,59 @@ def parse(config_path):
     config = {}
     folders_path = []
     names_regex = []
+    options = ['IN_ACCESS', 'IN_MODIFY', 'IN_ATTRIB', 'IN_CLOSE_WRITE', 'IN_CLOSE_NOWRITE',
+               'IN_OPEN', 'IN_MOVED_FROM', 'IN_MOVED_TO', 'IN_CREATE', 'IN_DELETE',
+               'IN_DELETE_SELF', 'IN_MOVE_SELF', 'IN_ALL_EVENTS']
 
-    with open(config_path, 'r') as fd:
-        for line in fd:
+    with open(config_path, 'r') as file_desc:
+        for line in file_desc:
             if re.match('FoldersPath:', line, flags=re.RegexFlag.IGNORECASE):
                 folders_path = [s.strip() for s in
                                 ast.literal_eval(line[line.index(':')+1:].strip())]
                 names_regex = []
-                # TODO: Verificar que folders_path seja uma lista e que todas as diretorias existam
-                for path in folders_path:
-                    if not path in config:
-                        config[path] = {}
-                        config[path][0] = False
+                if isinstance(folders_path, list):
+                    for path in folders_path:
+                        if os.path.isdir(path):
+                            if not path in config:
+                                config[path] = {}
+                                config[path][0] = False
+                        else:
+                            print(f"Error: directory {path} doesn't exist", file=sys.stderr)
+                else:
+                    print("Error: FoldersPath must be a list", file=sys.stderr)
             elif re.match('NamesRegex:', line, flags=re.RegexFlag.IGNORECASE):
                 names_regex = [s.strip() for s in
                                ast.literal_eval(line[line.index(':')+1:].strip())]
-                # TODO: Verificar que names_regex seja uma lista
-                for path in folders_path:
-                    for name in names_regex:
-                        if name not in config[path]:
-                            config[path][name] = {}
+                if isinstance(names_regex, list):
+                    for path in folders_path:
+                        for name in names_regex:
+                            if name not in config[path]:
+                                config[path][name] = {}
+                else:
+                    print("Error: NamesRegex must be a list", file=sys.stderr)
             elif re.match('Recursive:', line, flags=re.RegexFlag.IGNORECASE):
                 config[path][0] = line[line.index(':')+1:].strip().lower() == 'true'
             elif not re.search(r'^\s*$', line):
                 ops = [s.strip() for s in line[:line.index(':')].split('|')]
                 actions = ast.literal_eval(line[line.index(':')+1:].strip())
-                # TODO: Verificar que opções sejam válidas
-                # TODO: Verificar que ações sejam válidas (tuplos, tipos de ação, ...)
-                for path in folders_path:
-                    for name in names_regex:
-                        for op in ops:
-                            if op not in config[path][name]:
-                                config[path][name][op] = set(actions)
-                            else:
-                                config[path][name][op].update(actions)
+
+                not_available_actions = list(filter(lambda x: x is not None,
+                                                    [a[1] if a[0] == 'SHELL_COMMAND'
+                                                     else None for a in actions]))
+
+                if not not_available_actions:
+                    for path in folders_path:
+                        for name in names_regex:
+                            for opt in ops:
+                                if opt in options:
+                                    if opt not in config[path][name]:
+                                        config[path][name][opt] = set(actions)
+                                    else:
+                                        config[path][name][opt].update(actions)
+                                else:
+                                    print(f"Error: option {opt} doesn't exist", file=sys.stderr)
+                else:
+                    print(f"Error: actions {not_available_actions} don't exist", file=sys.stderr)
             else:
                 folders_path = []
                 names_regex = []
@@ -112,12 +131,13 @@ def concat_config(config, new_config):
             for filename in config[new_path]:
                 if filename != 0:
                     if filename in new_config[new_path]:
-                        for op in config[new_path][filename]:
-                            if op in new_config[new_path][filename]:
-                                new_config[new_path][filename][op]\
-                                    .update(config[new_path][filename][op])
+                        for opt in config[new_path][filename]:
+                            if opt in new_config[new_path][filename]:
+                                new_config[new_path][filename][opt]\
+                                    .update(config[new_path][filename][opt])
                             else:
-                                new_config[new_path][filename][op] = config[new_path][filename][op]
+                                new_config[new_path][filename][opt] = \
+                                    config[new_path][filename][opt]
                     else:
                         new_config[new_path][filename] = config[new_path][filename]
     return config
@@ -175,7 +195,7 @@ def main():
     uses the result to add watchers to the watched folders, listen for events and execute actions
     """
     if len(sys.argv) != 2:
-        print('USAGE:\tpython3 inoti-make.py <CONFIG_FILE>')
+        print('USAGE:\tpython3 inoti_make.py <CONFIG_FILE>')
         exit(1)
     config = parse(sys.argv[1])
     listen_folders(config)
