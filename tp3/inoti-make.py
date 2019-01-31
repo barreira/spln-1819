@@ -40,6 +40,7 @@ def parse(config_path):
                 folders_path = [s.strip() for s in
                                 ast.literal_eval(line[line.index(':')+1:].strip())]
                 names_regex = []
+                # TODO: Verificar que folders_path seja uma lista e que todas as diretorias existam
                 for path in folders_path:
                     if not path in config:
                         config[path] = {}
@@ -47,6 +48,7 @@ def parse(config_path):
             elif re.match('NamesRegex:', line, flags=re.RegexFlag.IGNORECASE):
                 names_regex = [s.strip() for s in
                                ast.literal_eval(line[line.index(':')+1:].strip())]
+                # TODO: Verificar que names_regex seja uma lista
                 for path in folders_path:
                     for name in names_regex:
                         if name not in config[path]:
@@ -56,6 +58,8 @@ def parse(config_path):
             elif not re.search(r'^\s*$', line):
                 ops = [s.strip() for s in line[:line.index(':')].split('|')]
                 actions = ast.literal_eval(line[line.index(':')+1:].strip())
+                # TODO: Verificar que opções sejam válidas
+                # TODO: Verificar que ações sejam válidas (tuplos, tipos de ação, ...)
                 for path in folders_path:
                     for name in names_regex:
                         for op in ops:
