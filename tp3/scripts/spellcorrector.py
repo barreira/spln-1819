@@ -57,11 +57,11 @@ def get_pos_context(before_word, word, after_word, words_freq, nlp):
     return context_pos
     
 
-def P(word, original_word, words_freq, pos_freqs, N_pos, before_word, after_word, nlp): 
+def P(word, original_word, words_freq, pos_freqs, N_words, before_word, after_word, nlp): 
     "Probability of `word`."
     context_pos = get_pos_context(before_word, word, after_word, words_freq, nlp)
     if word in words_freq:
-        freq = (words_freq[word.lower()][word] / N_pos) * (60 if word.lower() != original_word.lower() else 100)
+        freq = (words_freq[word.lower()][word] / N_words) * (60 if word.lower() != original_word.lower() else 100)
     else:
         freq = 0
     if context_pos:
@@ -69,9 +69,9 @@ def P(word, original_word, words_freq, pos_freqs, N_pos, before_word, after_word
         freq = freq * pos_freq * 100
     return freq
 
-def correction(word, words_freq, pos_freqs, N_pos, before_word, after_word, nlp): 
+def correction(word, words_freq, pos_freqs, N_words, before_word, after_word, nlp): 
     "Most probable spelling correction for word."
-    return max(candidates(word, words_freq), key=lambda x: P(x, word, words_freq, pos_freqs, N_pos, before_word, after_word, nlp))
+    return max(candidates(word, words_freq), key=lambda x: P(x, word, words_freq, pos_freqs, N_words, before_word, after_word, nlp))
 
 def candidates(word, words_freq): 
     "Generate possible spelling corrections for word."
@@ -105,11 +105,11 @@ def next_word_on_sentence(current_word, next_words, exceptions):
             return word
     return None
 
-def correct_line(line, pos_freqs, words_freq, nlp=spacy.load('pt')):
+def correct_line(line, pos_freqs, words_freq, nlp):
     words =  regex.findall(r'\w+|\s+|\p{P}+', line, flags=regex.UNICODE)
     new_line = ''
     flatten = lambda l: [item for sublist in l for item in sublist]
-    N_pos = sum(flatten(map(lambda x: x.values() , words_freq.values())))
+    N_words = sum(flatten(map(lambda x: x.values() , words_freq.values())))
     last_word = None
     exceptions = ['sr','sra','sras','dr','dra','prof']
     for i, word in enumerate(words):
@@ -121,7 +121,7 @@ def correct_line(line, pos_freqs, words_freq, nlp=spacy.load('pt')):
             # candidates = candidates(word, words_freq)
             before_word = last_word
             after_word = next_word_on_sentence(word, words[i+1:], exceptions)
-            last_word = correction(word.lower(), words_freq, pos_freqs, N_pos, before_word, after_word, nlp)
+            last_word = correction(word.lower(), words_freq, pos_freqs, N_words, before_word, after_word, nlp)
             new_line += last_word
     # Caracter maiúsculo no início da linha
     new_line = regex.sub(r'^\s*\w', lambda x: x[0].upper(), new_line)
@@ -273,7 +273,8 @@ def get_pos_frequences(text_fd, dict_words):
     return c, words
 
 def analyze_large_text():
-    # cat CETEMPublico1.7_100MB | perl -pe 's/\s/ /g' | perl -pe 's/\s*<[^>]+>\s*/\n/g' | perl -pe 's/^\s*$//g' | perl -pe 's/ ([,.!?$%;:])/\1/g' | perl -pe 's/(\(|\[|\{|«|<) /\1/g' | perl -pe 's/ (\)|\]|\}|>|»)/\1/g' > CETEMPublico.txt
+    # iconv -f ISO-8859-1 -t UTF-8//TRANSLIT CETEMPublico1.7_100MB -o CETEMPublico_100MB_.txt
+    # cat CETEMPublico_100MB_.txt | perl -pe 's/\s/ /g' | perl -pe 's/\s*<[^>]+>\s*/\n/g' | perl -pe 's/^\s*$//g' | perl -pe 's/ +/ /g' | perl -pe 's/ ([,.!?$%;:])/\1/g' | perl -pe 's/(\(|\[|\{|«|<) /\1/g' | perl -pe 's/ (\)|\]|\}|>|»)/\1/g' > CETEMPublico.txt
     if not os.path.isfile('dict_info_tags.json'):
         pos_freq = None
         words_freq = None
