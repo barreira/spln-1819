@@ -99,7 +99,7 @@ def classification(original_word, errors_word, corrected_word):
 def get_wrong_texts(n_tests, original_tokens):
     "Get `n_tests` texts with errors."
     wrong_texts = []
-    with open('aux_files/errors.txt', 'w+') as file_desc:
+    with open('metrics_errors.txt', 'w+') as file_desc:
         for i in range(n_tests):
             errors_text = gen_text_with_errors(original_tokens)
             wrong_texts.append(errors_text)
@@ -130,7 +130,7 @@ def get_metrics(function_name, id_test, function, original_tokens, errors_text):
         duration = time2-time1
 
     corrected_tokens = regex.findall(r'\w+|\s+|\p{P}+', corrected_text, flags=regex.UNICODE)
-    with open('aux_files/corrected.txt', 'a+') as file_desc:
+    with open('metrics_corrected.txt', 'a+') as file_desc:
         print(f'\n-- FUNÇÃO {function_name} - TESTE {id_test} --', file=file_desc)
         print(corrected_text, file=file_desc)
 
@@ -246,7 +246,7 @@ def run_tests(function_name, function, original_tokens, wrong_texts, n_tests):
         true_positive_rate = None
         false_positive_rate = None
 
-    return true_positives_wrong_correction, true_positives_wrong_correction, true_negatives,\
+    return true_positives_wrong_correction, true_positives_right_correction, true_negatives,\
             false_positives, false_negatives, accuracy, precision, recall, harmonic_mean,\
             true_positive_rate, false_positive_rate, duration
 

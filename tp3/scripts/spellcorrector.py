@@ -130,7 +130,7 @@ def correct_line(line, pos_freqs, words_freq, nlp):
     for i, word in enumerate(words):
         if word.isspace():
             new_line += regex.sub(r' +', ' ', word)
-        elif regex.search(r'\p{P}+', word, flags=regex.UNICODE):
+        elif regex.search(r'\p{P}+', word, flags=regex.UNICODE) or not word.isalpha():
             new_line += word
         else:
             # candidates = candidates(word, words_freq)
@@ -155,7 +155,7 @@ def correct_line_aspell(line):
     words = regex.findall(r'\w+|\s+|\p{P}+', line, flags=regex.UNICODE)
     new_line = []
     for word in words:
-        if regex.match(r'\s+|\p{P}+', word):
+        if regex.match(r'\s+|\p{P}+', word) or not word.isalpha():
             new_line.append(word)
         else:
             suggestions = speller.suggest(word)
@@ -175,13 +175,13 @@ def correct_line_hunspell(line):
     words = regex.findall(r'\w+|\s+|\p{P}+', line, flags=regex.UNICODE)
     new_line = []
     for word in words:
-        if regex.match(r'\s+|\p{P}+', word):
+        if regex.match(r'\s+|\p{P}+', word) or not word.isalpha():
             new_line.append(word)
         elif hobj.spell(word):
             new_line.append(word)
         else:
             suggestions = hobj.suggest(word)
-            if suggestions > 0:
+            if suggestions:
                 new_line.append(suggestions[0])
             else:
                 new_line.append(word)
@@ -213,11 +213,11 @@ def correct_line_symspelly(line):
     words = regex.findall(r'\w+|\s+|\p{P}+', line, flags=regex.UNICODE)
     new_line = []
     for word in words:
-        if regex.match(r'\s+|\p{P}+', word):
+        if regex.match(r'\s+|\p{P}+', word) or not word.isalpha():
             new_line.append(word)
         else:
             suggestions = sym_spell.lookup(word, suggestion_verbosity, max_edit_distance_lookup)
-            if suggestions > 0:
+            if suggestions:
                 new_line.append(suggestions[0].term)
             else:
                 new_line.append(word)
