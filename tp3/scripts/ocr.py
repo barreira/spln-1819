@@ -1,19 +1,32 @@
-# https://www.pyimagesearch.com/2018/09/17/opencv-ocr-and-text-recognition-with-tesseract/
+""" OCR implementation
 
-# USAGE
-# python text_recognition.py --east frozen_east_text_detection.pb --image images/example_01.jpg
-# python text_recognition.py --east frozen_east_text_detection.pb --image images/example_04.jpg --padding 0.05
+Uses OpenCV's EAST Detector to detect regions of an image that contain words and processes
+them using Tesseract to obtain text.
 
-# import the necessary packages
-from imutils.object_detection import non_max_suppression
+The path to the image must be passed as parameter to the script, as well as the .pb file
+used to train OpenCV's EAST detector.
+
+Usage: python3 ocr.py --east [PATH_TO_PB_FILE] --image [PATH_TO_IMAGE]
+
+This is an adaptation of a tutorial that can be found at
+https://www.pyimagesearch.com/2018/09/17/opencv-ocr-and-text-recognition-with-tesseract/.
+"""
+
+import sys
+import argparse
 import numpy as np
 import pytesseract
-import argparse
+from imutils.object_detection import non_max_suppression
 import cv2
-import sys
 
 
 def decode_predictions(scores, geometry):
+    """
+    Uses a deep learning-based text detector to detect (not recognize) regions of text in
+    an image. The text detector produces two arrays, one containing the probability of a
+    given area containing text, and another that maps the score to a bounding box location
+    in the input image.
+    """
     # grab the number of rows and columns from the scores volume, then
     # initialize our set of bounding box rectangles and corresponding
     # confidence scores
@@ -71,47 +84,59 @@ def decode_predictions(scores, geometry):
     return rects, confidences
 
 
-def cmp_to_key(mycmp):
-    'Convert a cmp= function into a key= function'
+def cmp_to_key(f):
+    """
+    Converts a cmp= function into a key= function
+    """
     class K(object):
         def __init__(self, obj, *args):
             self.obj = obj
 
         def __lt__(self, other):
-            return mycmp(self.obj, other.obj) < 0
+            return f(self.obj, other.obj) < 0
 
         def __gt__(self, other):
-            return mycmp(self.obj, other.obj) > 0
+            return f(self.obj, other.obj) > 0
 
         def __eq__(self, other):
-            return mycmp(self.obj, other.obj) == 0
+            return f(self.obj, other.obj) == 0
 
         def __le__(self, other):
-            return mycmp(self.obj, other.obj) <= 0
+            return f(self.obj, other.obj) <= 0
 
         def __ge__(self, other):
-            return mycmp(self.obj, other.obj) >= 0
+            return f(self.obj, other.obj) >= 0
 
         def __ne__(self, other):
-            return mycmp(self.obj, other.obj) != 0
+            return f(self.obj, other.obj) != 0
     return K
 
 
-def mycmp(x1, x2):
-    if x1[0][1] - x2[0][1] < 10:
+def my_cmp(x1, x2):
+    """
+    Compare function used to sort the result coordinates in natural order (from top to
+    bottom and left to right).
+    """
+    if x1[0][1] - x2[0][1] < 10:  # margin of 10 units
         return x1[0][0] - x2[0][0]
-    else:
-        return x1[0][1] - x2[0][1]
+
+    return x1[0][1] - x2[0][1]
 
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", type=str, help="path to input image")
-ap.add_argument("-east", "--east", type=str, help="path to input EAST text detector")
-ap.add_argument("-c", "--min-confidence", type=float, default=0.5, help="min probability required to inspect a region")
-ap.add_argument("-w", "--width", type=int, default=320, help="nearest multiple of 32 for resized width")
-ap.add_argument("-e", "--height", type=int, default=320, help="nearest multiple of 32 for resized height")
-ap.add_argument("-p", "--padding", type=float, default=0.0, help="amount of padding to add to each border of ROI")
+ap.add_argument("-i", "--image", type=str,
+                help="path to input image")
+ap.add_argument("-east", "--east", type=str,
+                help="path to input EAST text detector")
+ap.add_argument("-c", "--min-confidence", type=float, default=0.5,
+                help="min probability required to inspect a region")
+ap.add_argument("-w", "--width", type=int, default=320,
+                help="nearest multiple of 32 for resized width")
+ap.add_argument("-e", "--height", type=int, default=320,
+                help="nearest multiple of 32 for resized height")
+ap.add_argument("-p", "--padding", type=float, default=0.0,
+                help="amount of padding to add to each border of ROI")
 args = vars(ap.parse_args())
 
 # load the input image and grab the image dimensions
@@ -197,8 +222,10 @@ for (startX, startY, endX, endY) in boxes:
 
 text = ""
 
-results.sort(key=cmp_to_key(mycmp), reverse=False)
+# sorts the results in natural order (from top to bottom and left to right)
+results.sort(key=cmp_to_key(my_cmp), reverse=False)
 
+# for each result gets the text obtained (r[-1]) and joins them all
 for r in results:
     text += "".join([c if ord(c) < 128 else "" for c in r[-1]]) + " "
 
