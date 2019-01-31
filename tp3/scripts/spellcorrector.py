@@ -3,7 +3,7 @@
 
 ''' Spell corrector with several operation modes
 
-Corrects the input text according to default mode or indicated (aspell/hunspell/symspelly).
+Corrects the input text according to default mode or indicated (aspell/hunspell/symspell).
 Indicates also the load and correction time.
 '''
 
@@ -188,10 +188,10 @@ def correct_line_hunspell(line):
     return ''.join(new_line)
 
 
-####################            SYMSPELLY            ####################
+####################            SYMSPELL            #####################
 
-def correct_line_symspelly(line):
-    "Corrects words on `line`, using symspelly library."
+def correct_line_symspell(line):
+    "Corrects words on `line`, using symspell library."
     # create object
     initial_capacity = 83000
     max_edit_distance_dictionary = 2 # maximum edit distance per dictionary precalculation
@@ -317,7 +317,7 @@ def correct_text_files(args, pos_freq, words_freq, correct_function):
 
 
 def correct_text_files_ext(args, correct_function):
-    "Corrects text of files, with aspell, hunspell or symspelly (`correct_function`) mode."
+    "Corrects text of files, with aspell, hunspell or symspell (`correct_function`) mode."
     for line in fileinput.input(args):
         new_line = correct_function(line.strip())
         print(new_line)
@@ -333,7 +333,7 @@ def correct_text(pos_freq, words_freq, text_lines):
 
 
 def correct_text_ext(text_lines, correct_function):
-    "Corrects text lines, with aspell, hunspell or symspelly (`correct_function`) mode."
+    "Corrects text lines, with aspell, hunspell or symspell (`correct_function`) mode."
     new_text = []
     for line in text_lines:
         new_text.append(correct_function(line.strip()))
@@ -352,7 +352,7 @@ def main():
                 'OPTIONS:\n' +\
                 '\t-h, --help\tShows this menu\n' +\
                 '\t-v, --version\tShows program version\n' +\
-                '\t-m, --mode\tUses specified mode - aspell, hunspell or symspellpy - ' +\
+                '\t-m, --mode\tUses specified mode - aspell, hunspell or symspell - ' +\
                     'to correct text words')
         exit(1)
 
@@ -363,8 +363,8 @@ def main():
                 correct_function = correct_line_aspell
             elif arg == 'hunspell':
                 correct_function = correct_line_hunspell
-            elif arg == 'symspelly':
-                correct_function = correct_line_symspelly
+            elif arg == 'symspell':
+                correct_function = correct_line_symspell
             else:
                 print(f'ERROR: Mode name ({arg}) not recognized', file=sys.stderr)
                 exit(1)
@@ -374,7 +374,7 @@ def main():
                     'OPTIONS:\n' +\
                     '\t-h, --help\tShows this menu\n' +\
                     '\t-v, --version\tShows program version\n' +\
-                    '\t-m, --mode\tUses specified mode - aspell, hunspell or symspellpy - ' +\
+                    '\t-m, --mode\tUses specified mode - aspell, hunspell or symspell - ' +\
                         'to correct text words')
             exit(0)
         if opt in ('-v', '--version'):

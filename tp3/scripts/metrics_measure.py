@@ -4,7 +4,7 @@
 ''' Measure metrics (5 tests average) from spellcorrector.py, with several operation modes
 
 Indicates several metrics (avarage) for each operation mode ("Manual", Aspell, Hunspell and
-Symspelly):
+Symspell):
     * True Positives Wrong
     * True Positives Right
     * True Negatives
@@ -263,7 +263,7 @@ def main():
 
     # Gerar estrutura da tabela output
     table = PrettyTable()
-    table.field_names = ["Medidas", "Manual", "Aspell", "Hunspell", "Symspelly"]
+    table.field_names = ["Medidas", "Manual", "Aspell", "Hunspell", "Symspell"]
     tpw_list = ['True Positives Wrong']
     tpr_list = ['True Positives Right']
     tn_list = ['True Negatives']
@@ -292,9 +292,9 @@ def main():
     fp_rate_list.append(fp_rate)
     d_list.append(f'{round(dur[0],2)} + {round(dur[1],2)}')
 
-    function_names = ["Aspell", "Hunspell", "Symspelly"]
+    function_names = ["Aspell", "Hunspell", "Symspell"]
     functions = [spellcorrector.correct_line_aspell, spellcorrector.correct_line_hunspell,
-                 spellcorrector.correct_line_symspelly]
+                 spellcorrector.correct_line_symspell]
     for i in range(0, 3):
         m_tpw, m_tpr, m_tn, m_fp, m_fn, accuracy, precision, recall, h_mean, tp_rate, fp_rate, \
             dur = run_tests(function_names[i], functions[i], original_tokens, wrong_texts, 5)
